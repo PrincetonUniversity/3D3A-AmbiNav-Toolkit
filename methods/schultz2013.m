@@ -58,9 +58,9 @@ end
 
 Ni = size(Ai,2);
 
-MUi = Ai*getAmbYMatrix(pwGrid, sqrt(Ni)-1, 'N3D');
+MUi = Ai*AmbiNav_sphericalHarmonicY(sqrt(Ni)-1, pwGrid);
 T = AmbiNav_planeWaveTranslation(-pwGrid, d, kVec);
 MUo = (MUi.*T)*diag(wQList);
-Ao = MUo*(getAmbYMatrix(pwGrid, Lo, 'N3D').');
+Ao = MUo*(AmbiNav_sphericalHarmonicY(Lo, pwGrid).');
 
 end

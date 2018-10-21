@@ -34,3 +34,5 @@ function kd0 = AmbiNav_kdThreshold()
 %   ==============================================================================
 
 kd0 = (2*pi*10/343)*0.001; % Approximately 1 mm at 10 Hz
+
+end
