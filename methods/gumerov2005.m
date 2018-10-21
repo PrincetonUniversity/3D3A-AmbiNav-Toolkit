@@ -1,13 +1,13 @@
-function T = AmbiNav_translation(Li, Lo, d, kVec)
-%AMBINAV_TRANSLATION Ambisonics translation coefficients matrix.
-%   T = AMBINAV_TRANSLATION(LI,LO,D,K) computes the ambisonic translation
-%   coefficients matrix T, for input ambisonics order LI, output order LO,
-%   translation position vector D (given in Cartesian coordinates), and for
-%   angular wavenumber K. K may be a vector, in which case T is (LO+1)^2-by
-%   -(LI+1)^2-by-LENGTH(K). The N3D ambisonics normalization convention is
-%   assumed.
+function Ao = gumerov2005(Ai, Lo, d, kVec)
+%GUMEROV2005 Ambisoncis navigation using translation coefficients.
+%   B = GUMEROV2005(A,LO,D,K) computes the translated ambisonics potentials
+%   B, up to order LO, given the ambisonics potentials A, a translation
+%   position vector D (given in Cartesian coordinates), and for angular
+%   wavenumber K. K may be a vector, in which case SIZE(A,1) must be
+%   LENGTH(K) and B is LENGTH(K)-by-(LO+1)^2. The N3D ambisonics
+%   normalization convention is assumed.
 %
-%   See also GUMEROV2005.
+%   See also AMBINAV_TRANSLATION.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -47,33 +47,18 @@ function T = AmbiNav_translation(Li, Lo, d, kVec)
 
 narginchk(4,4);
 
-if numel(d) == 3
-    [AZIM,ELEV,R] = cart2sph(d(1),d(2),d(3));
-else
+if numel(d) ~= 3
     error('Translation vector D should have three elements.');
 end
 
 kLen = length(kVec);
 
-Ni = (Li + 1)^2;
+Ni = size(Ai,2);
 No = (Lo + 1)^2;
 
-if R == 0
-    QzL = eye(No);
-    QzR = eye(Ni);
-else
-    QzL = AmbiNav_zRotation(AZIM, ELEV, Lo);
-    QzR = AmbiNav_zRotation(AZIM, ELEV, Li);
-end
+T = AmbiNav_translation(sqrt(Ni)-1, Lo, d, kVec);
 
-T = zeros(No,Ni,kLen);
-Tz = AmbiNav_zTranslation(kVec*R, max([Li, Lo]));
-for kk = 1:kLen
-    if kVec(kk)*R < AmbiNav_kdThreshold()
-        T(:,:,kk) = eye(No,Ni);
-    else
-        T(:,:,kk) = QzL*Tz(1:No,1:Ni,kk)/QzR;
-    end
-end
-
+Ao = zeros(kLen,No);
+for nn = 1:No
+    Ao(:,nn) = sum(Ai.*squeeze(T(nn,:,:)).',2);
 end

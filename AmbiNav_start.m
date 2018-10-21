@@ -33,5 +33,6 @@ function [] = AmbiNav_start()
 
 [AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
 addpath(fullfile(AmbiNavDir, 'amb'))
+addpath(fullfile(AmbiNavDir, 'methods'))
 
 end
