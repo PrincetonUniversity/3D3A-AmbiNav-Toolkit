@@ -1,7 +1,7 @@
-function val = sphericalBesselJ(n,x)
-%SPHERICALBESSELJ Spherical Bessel function.
-%   J = SPHERICALBESSELJ(N,X) returns the value J of the spherical Bessel
-%   function of the first kind for order N and with argument X.
+function val = AmbiNav_sphericalBesselJ(n,x)
+%AMBINAV_SPHERICALBESSELJ Spherical Bessel function.
+%   J = AMBINAV_SPHERICALBESSELJ(N,X) returns the value J of the spherical
+%   Bessel function of the first kind for order N and with argument X.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
