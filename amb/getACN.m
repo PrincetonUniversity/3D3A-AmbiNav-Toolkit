@@ -3,20 +3,20 @@ function acn = getACN(l, m)
 %   N = GETACN(L, M) computes the ambisonic channel number N for a given
 %   order L and degree M pair. Either L or M may be an array provided that
 %   the other is either a scalar or an array with the same dimensions.
+%   Returns NaN if ABS(M)>L.
 %
 %   See also GETAMBORDER.
 
 %   ==============================================================================
-%   This file is part of the 3D3A MATLAB Toolbox.
+%   This file is part of the 3D3A AmbiNav Toolkit.
 %   
-%   Contributing author(s), listed alphabetically by last name:
 %   Joseph G. Tylka <josephgt@princeton.edu>
 %   3D Audio and Applied Acoustics (3D3A) Laboratory
 %   Princeton University, Princeton, New Jersey 08544, USA
 %   
 %   MIT License
 %   
-%   Copyright (c) 2017 Princeton University
+%   Copyright (c) 2018 Princeton University
 %   
 %   Permission is hereby granted, free of charge, to any person obtaining a copy
 %   of this software and associated documentation files (the "Software"), to deal
@@ -41,5 +41,6 @@ function acn = getACN(l, m)
 %     [1] Nachbar et al. (2011) ambiX - A Suggested Ambisonics Format.
 
 acn = l.*(l + 1) + m;
+acn(abs(m)>l) = NaN;
 
 end

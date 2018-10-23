@@ -1,21 +1,20 @@
 function [l, m] = getAmbOrder(n)
 %GETAMBORDER Ambisonics order and degree.
 %   [L, M] = GETAMBORDER(N) returns the order L and degree M for ambisonics
-%   channel number (ACN) N.
+%   channel number (ACN) N. Returns NaN if N<0.
 %
 %   See also GETACN.
 
 %   ==============================================================================
-%   This file is part of the 3D3A MATLAB Toolbox.
+%   This file is part of the 3D3A AmbiNav Toolkit.
 %   
-%   Contributing author(s), listed alphabetically by last name:
 %   Joseph G. Tylka <josephgt@princeton.edu>
 %   3D Audio and Applied Acoustics (3D3A) Laboratory
 %   Princeton University, Princeton, New Jersey 08544, USA
 %   
 %   MIT License
 %   
-%   Copyright (c) 2017 Princeton University
+%   Copyright (c) 2018 Princeton University
 %   
 %   Permission is hereby granted, free of charge, to any person obtaining a copy
 %   of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +39,7 @@ function [l, m] = getAmbOrder(n)
 %     [1] Nachbar et al. (2011) ambiX - A Suggested Ambisonics Format.
 
 l = floor(sqrt(n));
+l(n<0) = NaN;
 m = n - l.*(l + 1);
 
 end
