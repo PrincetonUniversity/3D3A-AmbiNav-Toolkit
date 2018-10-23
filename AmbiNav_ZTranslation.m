@@ -84,7 +84,10 @@ for m = 0:(maxOrder-1)
             % Eq. 163 [2]; Eq. 3.2.90 [1]
             term1 = AmbiNav_CoefficientA(l,m)*Tz(getACN(n,m)+1,getACN(l+1,m)+1,nzkd);
             term2 = AmbiNav_CoefficientA(l-1,m)*Tz(getACN(n,m)+1,getACN(l-1,m)+1,nzkd);
-            term3 = AmbiNav_CoefficientA(n-1,m)*Tz(getACN(n-1,m)+1,getACN(l,m)+1,nzkd);
+            term3 = AmbiNav_CoefficientA(n-1,m);
+            if term3 ~= 0
+                term3 = term3*Tz(getACN(n-1,m)+1,getACN(l,m)+1,nzkd);
+            end
             Tz(getACN(n+1,m)+1,getACN(l,m)+1,nzkd) = -(term1-term2-term3)/AmbiNav_CoefficientA(n,m);
         end
     end
