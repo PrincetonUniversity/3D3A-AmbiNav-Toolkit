@@ -32,17 +32,25 @@ AmbiNav_Start;
 
 %% Examples
 
-freqVec = (0:2047).'*48000/2048;
-kVec = 2*pi*freqVec/343;
+Fs = 48000;
+FFTLen = 2048;
+kLen = 1 + FFTLen/2;
+
+freqVec = AmbiNav_FreqVec(Fs,FFTLen);
+kVec = AmbiNav_F2K(freqVec(1:kLen));
 ain = zeros(2048,25);
 ain(1,1) = 1;
-Ain = conj(fft(ain));
-Aout = gumerov2005(Ain, 2, [1 1 0], kVec);
+Ain = AmbiNav_FFT(ain,FFTLen,1);
+Aout = gumerov2005(Ain(1:kLen,:), 2, [1 1 0], kVec);
+aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
+
+timeVec = AmbiNav_TimeVec(Fs,FFTLen);
+plot(timeVec,aout(:,1))
 
 %%
 
 [posMat, wQList] = AmbiNav_LoadGrid('fliege_36');
-[Aout, MUout] = schultz2013(Ain, 2, posMat, [1 1 0], kVec, wQList);
+[Aout, MUout] = schultz2013(Ain(1:kLen,:), 2, posMat, [1 1 0], kVec, wQList);
+aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
 
-
-plot(AmbiNav_IFFT(Aout(:,1),'symmetric'))
+plot(timeVec,aout(:,1))

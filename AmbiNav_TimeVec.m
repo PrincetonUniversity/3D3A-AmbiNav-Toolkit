@@ -1,7 +1,11 @@
-function f = AmbiNav_FreqVec(Fs,K)
-%AMBINAV_FREQVEC Vector of linearly-spaced frequencies.
-%   F = AMBINAV_FREQVEC(FS,K) returns a length K column-vector of linearly-
-%   spaced frequencies ranging from 0 to (FS - DF), where DF = FS/K.
+function t = AmbiNav_TimeVec(Fs,N)
+%AMBINAV_TIMEVEC Vector of linearly-spaced time values.
+%   T = AMBINAV_TIMEVEC(FS,N) returns a length N column-vector of linearly-
+%   spaced time values ranging from 0 to (N - 1)/FS. If FS is specified in
+%   Hz (samples per second), then T is returned in seconds; if specified in
+%   kHz, then T is returned in milliseconds.
+%
+%   See also GETFREQVEC.
 
 %   =======================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -34,6 +38,6 @@ function f = AmbiNav_FreqVec(Fs,K)
 %   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 %   =======================================================================
 
-f = Fs*(0:K-1).'/K;
+t = (0:N-1).'/Fs;
 
 end
