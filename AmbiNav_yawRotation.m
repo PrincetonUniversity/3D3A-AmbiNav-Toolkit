@@ -1,4 +1,4 @@
-function Qa = AmbiNav_yawRotation(alpha, maxOrder)
+function Qa = AmbiNav_YawRotation(alpha, maxOrder)
 %AMBINAV_YAWROTATION Ambisonics rotation in yaw.
 %   Q = AMBINAV_YAWROTATION(A, L) computes the ambisonic rotation
 %   coefficients matrix Q, up to ambisonics order L, for a rotation of A 

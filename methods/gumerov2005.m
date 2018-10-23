@@ -3,9 +3,12 @@ function Ao = gumerov2005(Ai, Lo, d, kVec)
 %   B = GUMEROV2005(A,LO,D,K) computes the translated ambisonics potentials
 %   B, up to order LO, given the ambisonics potentials A, a translation
 %   position vector D (given in Cartesian coordinates), and for angular
-%   wavenumber K. K may be a vector, in which case SIZE(A,1) must be
-%   LENGTH(K) and B is LENGTH(K)-by-(LO+1)^2. The N3D ambisonics
-%   normalization convention is assumed.
+%   wavenumber K.
+%
+%   K may be a vector, in which case SIZE(A,1) must be LENGTH(K) and B will
+%   be LENGTH(K)-by-(LO+1)^2.
+%
+%   The ACN/N3D ambisonics normalization convention is assumed.
 %
 %   See also AMBINAV_TRANSLATION.
 
@@ -56,7 +59,7 @@ kLen = length(kVec);
 Ni = size(Ai,2);
 No = (Lo + 1)^2;
 
-T = AmbiNav_translation(sqrt(Ni)-1, Lo, d, kVec);
+T = AmbiNav_Translation(sqrt(Ni)-1, Lo, d, kVec);
 
 Ao = zeros(kLen,No);
 for nn = 1:No

@@ -1,8 +1,9 @@
-function Qb = AmbiNav_fixedPitchRotation(maxOrder)
-%AMBINAV_FIXEDPITCHROTATION Ambisonics rotation of 90 degrees pitch.
-%   Q = AMBINAV_FIXEDPITCHROTATION(L) computes the ambisonic rotation
-%   coefficients matrix Q, up to ambisonics order L, for a rotation of 90
-%   degrees pitch.
+function Qb = AmbiNav_Pitch90(maxOrder)
+%AMBINAV_PITCH90 Ambisonics rotation of 90 degrees pitch.
+%   Q = AMBINAV_PITCH90(L) computes the ambisonic rotation coefficients
+%   matrix Q, up to ambisonics order L, for a rotation of 90 degrees pitch.
+%
+%   See also AMBINAV_COEFFICIENTA, AMBINAV_COEFFICIENTB.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -58,13 +59,13 @@ end
 % Step 2
 for m = 1:maxOrder
     for n = m:(2*maxOrder - m)
-        coeff = sqrt(2-(~m))/(2*AmbiNav_coefficientB(n+1,m-1)*sqrt(2-(~(m-1))));
+        coeff = sqrt(2-(~m))/(2*AmbiNav_CoefficientB(n+1,m-1)*sqrt(2-(~(m-1))));
         for s = m:n
             % Eq. 190 [2]
-            temp = (AmbiNav_coefficientB(n+1,s-1)/sqrt(2-(~(s-1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s-1)+1) ...
-                - (AmbiNav_coefficientB(n+1,-s-1)/sqrt(2-(~(s+1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s+1)+1);
+            temp = (AmbiNav_CoefficientB(n+1,s-1)/sqrt(2-(~(s-1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s-1)+1) ...
+                - (AmbiNav_CoefficientB(n+1,-s-1)/sqrt(2-(~(s+1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s+1)+1);
             Q(getACN(n, m)+1,getACN(n,s)+1) = coeff*(sqrt(2-(~s))*temp ...
-                + 2*AmbiNav_coefficientA(n,s)*Q(getACN(n+1,m-1)+1,getACN(n+1,s)+1));
+                + 2*AmbiNav_CoefficientA(n,s)*Q(getACN(n+1,m-1)+1,getACN(n+1,s)+1));
         end
     end
 end

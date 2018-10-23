@@ -1,4 +1,4 @@
-function val = AmbiNav_sphericalBesselJ(n,x)
+function val = AmbiNav_SphericalBesselJ(n,x)
 %AMBINAV_SPHERICALBESSELJ Spherical Bessel function.
 %   J = AMBINAV_SPHERICALBESSELJ(N,X) returns the value J of the spherical
 %   Bessel function of the first kind for order N and with argument X.

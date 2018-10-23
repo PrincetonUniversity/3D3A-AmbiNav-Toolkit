@@ -1,10 +1,9 @@
-function Qc = AmbiNav_fixedRollRotation(maxOrder)
-%AMBINAV_FIXEDROLLROTATION Ambisonics rotation of 90 degrees roll.
-%   Q = AMBINAV_FIXEDROLLROTATION(L) computes the ambisonic rotation
-%   coefficients matrix Q, up to ambisonics order L, for a rotation of 90
-%   degrees roll.
+function Qa = AmbiNav_Yaw90(maxOrder)
+%AMBINAV_YAW90 Ambisonics rotation of 90 degrees yaw.
+%   Q = AMBINAV_YAW90(L) computes the ambisonic rotation coefficients
+%   matrix Q, up to ambisonics order L, for a rotation of 90 degrees yaw.
 %
-%   See also AMBINAV_FIXEDPITCHROTATION, AMBINAV_FIXEDYAWROTATION.
+%   See also AMBINAV_YAWROTATION.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -42,7 +41,24 @@ function Qc = AmbiNav_fixedRollRotation(maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qb = AmbiNav_fixedPitchRotation(maxOrder);
-Qc = Qb*AmbiNav_fixedYawRotation(maxOrder)/Qb;
+HOATerms = (maxOrder + 1)^2;
+[nList, mList] = getAmbOrder(0:HOATerms-1);
+
+Qa = zeros(HOATerms);
+for ii = 1:HOATerms
+    for jj = 1:HOATerms
+        if (nList(ii) == nList(jj)) && (abs(mList(ii)) == abs(mList(jj)))
+            if mList(ii)*mList(jj) >= 0
+                if ~mod(mList(jj),2)
+                    Qa(ii,jj) = (-1)^(mList(jj)/2);
+                end
+            else
+                if mod(mList(jj),2)
+                    Qa(ii,jj) = (-1)^((mList(jj)-1)/2);
+                end
+            end
+        end
+    end
+end
 
 end

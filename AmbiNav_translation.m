@@ -1,11 +1,13 @@
-function T = AmbiNav_translation(Li, Lo, d, kVec)
+function T = AmbiNav_Translation(Li, Lo, d, kVec)
 %AMBINAV_TRANSLATION Ambisonics translation coefficients matrix.
 %   T = AMBINAV_TRANSLATION(LI,LO,D,K) computes the ambisonic translation
 %   coefficients matrix T, for input ambisonics order LI, output order LO,
 %   translation position vector D (given in Cartesian coordinates), and for
-%   angular wavenumber K. K may be a vector, in which case T is (LO+1)^2-by
-%   -(LI+1)^2-by-LENGTH(K). The N3D ambisonics normalization convention is
-%   assumed.
+%   angular wavenumber K.
+%
+%   K may be a vector, in which case T is (LO+1)^2-by-(LI+1)^2-by-LENGTH(K).
+%
+%   The ACN/N3D ambisonics normalization convention is assumed.
 %
 %   See also GUMEROV2005.
 
@@ -62,14 +64,14 @@ if R == 0
     QzL = eye(No);
     QzR = eye(Ni);
 else
-    QzL = AmbiNav_zRotation(AZIM, ELEV, Lo);
-    QzR = AmbiNav_zRotation(AZIM, ELEV, Li);
+    QzL = AmbiNav_ZRotation(AZIM, ELEV, Lo);
+    QzR = AmbiNav_ZRotation(AZIM, ELEV, Li);
 end
 
 T = zeros(No,Ni,kLen);
-Tz = AmbiNav_zTranslation(kVec*R, max([Li, Lo]));
+Tz = AmbiNav_ZTranslation(kVec*R, max([Li, Lo]));
 for kk = 1:kLen
-    if kVec(kk)*R < AmbiNav_kdThreshold()
+    if kVec(kk)*R < AmbiNav_KDThreshold()
         T(:,:,kk) = eye(No,Ni);
     else
         T(:,:,kk) = QzL*Tz(1:No,1:Ni,kk)/QzR;

@@ -1,8 +1,8 @@
-function Y = AmbiNav_sphericalHarmonicY(L, R)
+function Y = AmbiNav_SphericalHarmonicY(L, R)
 %AMBINAV_SPHERICALHARMONICY Real-valued spherical harmonic function.
 %   Y = AMBINAV_SPHERICALHARMONICY(L,R) computes the real-valued, N3D
 %       normalized spherical harmonics, up to order L and for positions R.
-%       The ambiX spherical harmonic convention is described by Zotter [1].
+%       The N3D spherical harmonic convention is described by Zotter [1].
 %
 %   Note:
 %       L must be a scalar.
@@ -39,6 +39,10 @@ function Y = AmbiNav_sphericalHarmonicY(L, R)
 %   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 %   SOFTWARE.
 %   ==============================================================================
+
+%   References:
+%     [1] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
+%         Spherical Arrays.
 
 % Needs at least 2 input arguments
 if nargin < 2

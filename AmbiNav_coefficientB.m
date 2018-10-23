@@ -1,4 +1,4 @@
-function b = AmbiNav_coefficientB(n, m)
+function b = AmbiNav_CoefficientB(n, m)
 %AMBINAV_COEFFICIENTB Spherical harmonic translation recurrence coefficient b.
 %   B = AMBINAV_COEFFICIENTB(L,M) returns the recurrence coefficient B for
 %   spherical harmonic order L and degree M.

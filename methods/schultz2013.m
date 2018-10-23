@@ -2,11 +2,13 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 %SCHULTZ2009 Ambisonics navigation using plane-wave translation.
 %   B = SCHULTZ2013(A,LO,RP,D,K) computes the translated ambisonics
 %   potentials B, up to order LO, given the ambisonics potentials A, a grid
-%   of plane-wave directions RP, a translation position vector D (given in
-%   Cartesian coordinates), and for angular wavenumber K. K may be a
-%   vector, in which case SIZE(A,1) must be LENGTH(K) and B is
-%   LENGTH(K)-by-(LO+1)^2. The N3D ambisonics normalization convention is
-%   assumed.
+%   of plane-wave directions RP (given in Cartesian coordinates), a
+%   translation position vector D, and for angular wavenumber K.
+%
+%   K may be a vector, in which case SIZE(A,1) must be LENGTH(K) and B will
+%   be LENGTH(K)-by-(LO+1)^2.
+%
+%   The ACN/N3D ambisonics normalization convention is assumed.
 %
 %   B = SCHULTZ2013(A,LO,RP,D,K,WQ) uses quadrature weights WQ. If
 %   unspecified, WQ is given by 1/SIZE(RP,1).
@@ -44,7 +46,8 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 %   ==============================================================================
 
 %   References:
-%     [1] Schultz and Spors (2013)
+%     [1] Schultz and Spors (2013) Data-based Binaural Synthesis Including 
+%         Rotational and Translatory Head-Movements.
 
 narginchk(5,6);
 
@@ -58,9 +61,9 @@ end
 
 Ni = size(Ai,2);
 
-MUi = Ai*AmbiNav_sphericalHarmonicY(sqrt(Ni)-1, pwGrid);
-T = AmbiNav_planeWaveTranslation(-pwGrid, d, kVec);
+MUi = Ai*AmbiNav_SphericalHarmonicY(sqrt(Ni)-1, pwGrid);
+T = AmbiNav_PlaneWaveTranslation(-pwGrid, d, kVec);
 MUo = (MUi.*T)*diag(wQList);
-Ao = MUo*(AmbiNav_sphericalHarmonicY(Lo, pwGrid).');
+Ao = MUo*(AmbiNav_SphericalHarmonicY(Lo, pwGrid).');
 
 end

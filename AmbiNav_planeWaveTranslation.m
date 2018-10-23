@@ -1,11 +1,13 @@
-function T = AmbiNav_planeWaveTranslation(rp, d, kVec)
+function T = AmbiNav_PlaneWaveTranslation(rp, d, kVec)
 %AMBINAV_PLANEWAVETRANSLATION Plane-wave translation coefficients matrix.
 %   T = AMBINAV_PLANEWAVETRANSLATION(RP,D,K) computes the plane-wave
 %   translation coefficients matrix T, for a grid of plane-wave directions
-%   RP, translation position vector D (given in Cartesian coordinates), and
-%   for angular wavenumber K. K may be a vector, in which case T is
-%   LENGTH(K)-by-SIZE(RP,1). The N3D ambisonics normalization convention is
-%   assumed.
+%   RP (given in Cartesian coordinates), translation position vector D, and
+%   for angular wavenumber K.
+%
+%   K may be a vector, in which case T is LENGTH(K)-by-SIZE(RP,1).
+%
+%   The ACN/N3D ambisonics normalization convention is assumed.
 %
 %   See also SCHULTZ2013.
 
@@ -38,12 +40,6 @@ function T = AmbiNav_planeWaveTranslation(rp, d, kVec)
 %   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 %   SOFTWARE.
 %   ==============================================================================
-
-%   References:
-%     [1] Gumerov and Duraiswami (2005) Fast Multipole Methods for the
-%         Helmholtz Equation in Three Dimensions.
-%     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
-%         Spherical Arrays.
 
 narginchk(3,3);
 

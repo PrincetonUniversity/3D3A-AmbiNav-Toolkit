@@ -1,4 +1,4 @@
-function kd0 = AmbiNav_kdThreshold()
+function kd0 = AmbiNav_KDThreshold()
 %AMBINAV_KDTHRESHOLD Translation threshold.
 %   AMBINAV_KDTHRESHOLD() defines the minimum translation distance required
 %   to compute translation coefficients, approximately 1 mm at 10 Hz.

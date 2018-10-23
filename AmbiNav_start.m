@@ -1,4 +1,4 @@
-function [] = AmbiNav_start()
+function [] = AmbiNav_Start()
 %AMBINAV_START Start the AmbiNav Toolkit.
 
 %   ==============================================================================

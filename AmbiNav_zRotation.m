@@ -1,4 +1,4 @@
-function Qz = AmbiNav_zRotation(AZIM, ELEV, L)
+function Qz = AmbiNav_ZRotation(AZIM, ELEV, L)
 %AMBINAV_ZROTATION Ambisonics rotation to align the z axis.
 %   Q = AMBINAV_ZROTATION(AZIM, ELEV, L) computes the ambisonic rotation
 %   matrix Q, up to ambisonics order L, which aligns the z-axis in the
@@ -48,8 +48,8 @@ function Qz = AmbiNav_zRotation(AZIM, ELEV, L)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qz = (AmbiNav_yawRotation(AZIM, L) / AmbiNav_fixedRollRotation(L)) ...
-    * AmbiNav_yawRotation((pi/2) - ELEV, L) ...
-    * AmbiNav_fixedRollRotation(L);
+Qz = (AmbiNav_YawRotation(AZIM, L) / AmbiNav_Roll90(L)) ...
+    * AmbiNav_YawRotation((pi/2) - ELEV, L) ...
+    * AmbiNav_Roll90(L);
 
 end
