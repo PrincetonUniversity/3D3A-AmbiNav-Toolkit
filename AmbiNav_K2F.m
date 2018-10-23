@@ -1,7 +1,9 @@
-function kd0 = AmbiNav_KDThreshold()
-%AMBINAV_KDTHRESHOLD Translation threshold.
-%   AMBINAV_KDTHRESHOLD() defines the minimum translation distance required
-%   to compute translation coefficients, approximately 1 mm at 10 Hz.
+function f = AmbiNav_K2F(k)
+%AMBINAV_K2F Convert angular wavenumber to temporal frequency in Hz.
+%   F = AMBINAV_K2F(K) returns temporal frequency F given by K*C/(2*PI),
+%   where C is the speed of sound.
+%
+%   See also AMBINAV_F2K, AMBINAV_SOUNDSPEED.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -33,6 +35,6 @@ function kd0 = AmbiNav_KDThreshold()
 %   SOFTWARE.
 %   ==============================================================================
 
-kd0 = (2*pi*10/AmbiNav_SoundSpeed())*0.001; % Approximately 1 mm at 10 Hz
+f = k*AmbiNav_SoundSpeed()/(2*pi);
 
 end

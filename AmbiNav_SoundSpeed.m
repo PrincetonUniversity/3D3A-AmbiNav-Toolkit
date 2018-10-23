@@ -1,7 +1,6 @@
-function kd0 = AmbiNav_KDThreshold()
-%AMBINAV_KDTHRESHOLD Translation threshold.
-%   AMBINAV_KDTHRESHOLD() defines the minimum translation distance required
-%   to compute translation coefficients, approximately 1 mm at 10 Hz.
+function c = AmbiNav_SoundSpeed()
+%AMBINAV_SOUNDSPEED Speed of sound in air.
+%   AMBINAV_SOUNDSPEED() returns the speed of sound in air, 343 m/s.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -33,6 +32,6 @@ function kd0 = AmbiNav_KDThreshold()
 %   SOFTWARE.
 %   ==============================================================================
 
-kd0 = (2*pi*10/AmbiNav_SoundSpeed())*0.001; % Approximately 1 mm at 10 Hz
+c = 343;
 
 end
