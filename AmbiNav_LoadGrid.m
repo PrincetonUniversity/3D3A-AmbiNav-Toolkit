@@ -1,3 +1,8 @@
+function [posMat, wQList] = AmbiNav_LoadGrid(matFile)
+%AMBINAV_LOADGRID Load a spherical grid from a MAT file.
+%   [R, W] = AMBINAV_LOADGRID(FILE) returns positions R and quadrature
+%   weights W for a given grid stored in FILE.
+
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
 %   
@@ -28,21 +33,10 @@
 %   SOFTWARE.
 %   ==============================================================================
 
-AmbiNav_Start;
+narginchk(1,1);
 
-%% Examples
+load(matFile)
+posMat = [x.',y.',z.'];
+wQList = shiftdim(w);
 
-freqVec = (0:2047).'*48000/2048;
-kVec = 2*pi*freqVec/343;
-ain = zeros(2048,25);
-ain(1,1) = 1;
-Ain = conj(fft(ain));
-Aout = gumerov2005(Ain, 2, [1 1 0], kVec);
-
-%%
-
-[posMat, wQList] = AmbiNav_LoadGrid('fliege_36');
-[Aout, MUout] = schultz2013(Ain, 2, posMat, [1 1 0], kVec, wQList);
-
-
-plot(AmbiNav_IFFT(Aout(:,1),'symmetric'))
+end

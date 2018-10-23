@@ -33,6 +33,7 @@ function [] = AmbiNav_Start()
 
 [AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
 addpath(fullfile(AmbiNavDir, 'amb'))
+addpath(fullfile(AmbiNavDir, 'grids'))
 addpath(fullfile(AmbiNavDir, 'methods'))
 
 end
