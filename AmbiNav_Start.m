@@ -36,4 +36,6 @@ addpath(fullfile(AmbiNavDir, 'amb'))
 addpath(fullfile(AmbiNavDir, 'grids'))
 addpath(fullfile(AmbiNavDir, 'methods'))
 
+disp('AmbiNav Toolkit found and initialized.')
+
 end
