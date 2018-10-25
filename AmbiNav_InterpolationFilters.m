@@ -8,6 +8,8 @@ function F = AmbiNav_InterpolationFilters(Li, Lo, u, d, kVec, beta)
 %   K may be a vector, in which case F is (LO+1)^2-by-(P*(LI+1)^2)-by-LENGTH(K).
 %
 %   The ACN/N3D ambisonics normalization convention is assumed.
+%
+%   See also AMBINAV_TRANSLATION, TYLKA2016.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
