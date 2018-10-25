@@ -1,5 +1,5 @@
 function Ao = southern2009(Ai, u, Lo, d)
-%SOUTHERN2009 Ambisoncis navigation using linear interpolation.
+%SOUTHERN2009 Ambisonics navigation using linear interpolation.
 %   B = SOUTHERN2009(A,U,LO,D) computes the interpolated ambisonics signals
 %   B, up to order LO and interpolated to position vector D (given in
 %   Cartesian coordinates), given the ambisonics signals A measured from

@@ -1,5 +1,5 @@
 function Ao = gumerov2005(Ai, Lo, d, kVec)
-%GUMEROV2005 Ambisoncis navigation using translation coefficients.
+%GUMEROV2005 Ambisonics navigation using translation coefficients.
 %   B = GUMEROV2005(A,LO,D,K) computes the translated ambisonics potentials
 %   B, up to order LO, given the ambisonics potentials A, a translation
 %   position vector D (given in Cartesian coordinates), and for angular
@@ -64,4 +64,6 @@ T = AmbiNav_Translation(sqrt(Ni)-1, Lo, d, kVec);
 Ao = zeros(kLen,No);
 for nn = 1:No
     Ao(:,nn) = sum(Ai.*squeeze(T(nn,:,:)).',2);
+end
+
 end
