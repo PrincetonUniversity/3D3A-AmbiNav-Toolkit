@@ -38,19 +38,57 @@ kLen = 1 + FFTLen/2;
 
 freqVec = AmbiNav_FreqVec(Fs,FFTLen);
 kVec = AmbiNav_F2K(freqVec(1:kLen));
-ain = zeros(2048,25);
-ain(1,1) = 1;
-Ain = AmbiNav_FFT(ain,FFTLen,1);
-Aout = gumerov2005(Ain(1:kLen,:), 2, [1 1 0], kVec);
+timeVec = AmbiNav_TimeVec(Fs,FFTLen);
+
+a1 = zeros(2048,16); a1(1,1) = 1;
+a2 = zeros(2048,16); a2(1,2) = 1;
+a3 = zeros(2048,16); a3(1,3) = 1;
+a4 = zeros(2048,16); a4(1,4) = 1;
+A1 = AmbiNav_FFT(a1,FFTLen,1);
+A2 = AmbiNav_FFT(a2,FFTLen,1);
+A3 = AmbiNav_FFT(a3,FFTLen,1);
+A4 = AmbiNav_FFT(a4,FFTLen,1);
+Ain = {A1(1:kLen,:),A2(1:kLen,:),A3(1:kLen,:),A4(1:kLen,:)};
+
+u = {[1 1 0],[1 -1 0],[-1 1 0],[-1 -1 0]};
+r = [0.1 0.2 0];
+
+Lout = 1;
+Nout = (Lout + 1)^2;
+
+[posMat, wQList] = AmbiNav_LoadGrid('fliege_36');
+
+figure()
+hold all
+
+%%
+
+Aout = gumerov2005(Ain{1}, Lout, r - u{1}, kVec);
+Aout = cat(1,Aout,zeros(FFTLen-kLen,Nout));
 aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
 
-timeVec = AmbiNav_TimeVec(Fs,FFTLen);
 plot(timeVec,aout(:,1))
 
 %%
 
-[posMat, wQList] = AmbiNav_LoadGrid('fliege_36');
-[Aout, MUout] = schultz2013(Ain(1:kLen,:), 2, posMat, [1 1 0], kVec, wQList);
+[Aout, ~] = schultz2013(Ain{1}, Lout, posMat, r - u{1}, kVec, wQList);
+Aout = cat(1,Aout,zeros(FFTLen-kLen,Nout));
+aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
+
+plot(timeVec,aout(:,1))
+
+%%
+
+Aout = southern2009(Ain, u, Lout, r);
+Aout = cat(1,Aout,zeros(FFTLen-kLen,Nout));
+aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
+
+plot(timeVec,aout(:,1))
+
+%%
+
+Aout = tylka2016(Ain, u, Lout, r, kVec);
+Aout = cat(1,Aout,zeros(FFTLen-kLen,Nout));
 aout = AmbiNav_IFFT(Aout,FFTLen,1,'symmetric');
 
 plot(timeVec,aout(:,1))
