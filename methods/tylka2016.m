@@ -1,7 +1,7 @@
-function Ao = tylka2016(Ai, u, Lo, d, kVec, beta)
+function Ao = tylka2016(Ai, u, Lo, r, kVec, beta)
 %TYLKA2016 Ambisonics navigation using least-squares interpolation filters.
-%   B = TYLKA2016(A,U,LO,D,K) computes the interpolated ambisonics signals
-%   B, up to order LO and interpolated to position vector D (given in
+%   B = TYLKA2016(A,U,LO,R,K) computes the interpolated ambisonics signals
+%   B, up to order LO and interpolated to position vector R (given in
 %   Cartesian coordinates), given the ambisonics signals A measured from
 %   positions U, and for angular wavenumber K.
 %
@@ -54,7 +54,7 @@ if nargin < 6
     beta = []; % Use default regularization function
 end
 
-if numel(d) ~= 3
+if numel(r) ~= 3
     error('Translation vector D should have three elements.');
 end
 
@@ -68,7 +68,7 @@ kLen = length(kVec);
 
 Acat = cell2mat(Ai(:).');
 Ao = zeros(kLen,(Lo + 1)^2);
-F = AmbiNav_InterpolationFilters(Li,Lo,u,d,kVec,beta);
+F = AmbiNav_InterpolationFilters(Li,Lo,u,r,kVec,beta);
 for kk = 1:length(kVec)
     Ao(kk,:) = Acat(kk,:) * F(:,:,kk).';
 end

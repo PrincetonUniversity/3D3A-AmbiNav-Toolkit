@@ -1,7 +1,7 @@
-function Ao = southern2009(Ai, u, Lo, d)
+function Ao = southern2009(Ai, u, Lo, r)
 %SOUTHERN2009 Ambisonics navigation using linear interpolation.
-%   B = SOUTHERN2009(A,U,LO,D) computes the interpolated ambisonics signals
-%   B, up to order LO and interpolated to position vector D (given in
+%   B = SOUTHERN2009(A,U,LO,R) computes the interpolated ambisonics signals
+%   B, up to order LO and interpolated to position vector R (given in
 %   Cartesian coordinates), given the ambisonics signals A measured from
 %   positions U.
 %
@@ -45,7 +45,7 @@ function Ao = southern2009(Ai, u, Lo, d)
 
 narginchk(4,4);
 
-if numel(d) ~= 3
+if numel(r) ~= 3
     error('Translation vector D should have three elements.');
 end
 
@@ -55,7 +55,7 @@ if numel(u) ~= numMics
 end
 
 No = (Lo + 1)^2;
-w = AmbiNav_InterpolationWeights(u,d);
+w = AmbiNav_InterpolationWeights(u,r);
 
 Ao = w(1)*Ai{1}(:,1:No);
 for nn = 2:numMics

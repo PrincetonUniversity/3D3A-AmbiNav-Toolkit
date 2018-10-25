@@ -1,8 +1,8 @@
-function F = AmbiNav_InterpolationFilters(Li, Lo, u, d, kVec, beta)
+function F = AmbiNav_InterpolationFilters(Li, Lo, u, r, kVec, beta)
 %AMBINAV_INTERPOLATIONFILTERS Regularized least-squares interpolation filters.
-%   F = AMBINAV_INTERPOLATIONFILTERS(LI,LO,U,D,K) computes least-squares
+%   F = AMBINAV_INTERPOLATIONFILTERS(LI,LO,U,R,K) computes least-squares
 %   ambisonics interpolation filters F, up to order LO for interpolation to
-%   position vector D (given in Cartesian coordinates), given P measurement
+%   position vector R (given in Cartesian coordinates), given P measurement
 %   positions U.
 %
 %   K may be a vector, in which case F is (LO+1)^2-by-(P*(LI+1)^2)-by-LENGTH(K).
@@ -47,16 +47,16 @@ function F = AmbiNav_InterpolationFilters(Li, Lo, u, d, kVec, beta)
 
 narginchk(5,6);
 
-if numel(d) ~= 3
-    error('Translation vector D should have three elements.');
+if numel(r) ~= 3
+    error('Position vector R should have three elements.');
 end
 
-weights = AmbiNav_InterpolationWeights(u,d);
+weights = AmbiNav_InterpolationWeights(u,r);
 weights(weights < max(weights)/1e10) = 0;
 
 % Default regularization function
 if nargin < 6 || isempty(beta)
-    beta = regFunction(kVec,u(weights~=0),d);
+    beta = regFunction(kVec,u(weights~=0),r);
 end
 
 numMics = numel(u);
@@ -73,7 +73,7 @@ for ll = 1:numMics
     
     % Each cell contains a matrix of size Ni-by-Nmax-by-K
     if weights(ll) ~= 0
-        T_cell{ll} = AmbiNav_Translation(Lmax, Li, u{ll} - d, kVec);
+        T_cell{ll} = AmbiNav_Translation(Lmax, Li, u{ll} - r, kVec);
     else
         T_cell{ll} = zeros(Ni, Nmax, kLen);
     end
@@ -120,14 +120,14 @@ w(w==min(w)) = w(w==min(w)) - d;
 
 end
 
-function beta = regFunction(k, u, d)
+function beta = regFunction(k, u, r)
 
 beta = zeros(length(k),1);
 
 numMics = numel(u);
 navDist = zeros(numMics,1);
 for ll = 1:numMics
-    navDist(ll) = norm(d - u{ll});
+    navDist(ll) = norm(r - u{ll});
 end
 
 switch numMics
