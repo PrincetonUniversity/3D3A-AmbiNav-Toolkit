@@ -1,11 +1,16 @@
-function Ao = tylka2016(Ai, u, Lo, d, kVec)
+function Ao = tylka2016(Ai, u, Lo, d, kVec, beta)
 %TYLKA2016 Ambisonics navigation using least-squares interpolation filters.
-%   B = TYLKA2016(A,U,LO,D) computes the interpolated ambisonics signals
+%   B = TYLKA2016(A,U,LO,D,K) computes the interpolated ambisonics signals
 %   B, up to order LO and interpolated to position vector D (given in
 %   Cartesian coordinates), given the ambisonics signals A measured from
-%   positions U.
+%   positions U, and for angular wavenumber K.
 %
 %   A and U should both be cell arrays with the same number of elements.
+%
+%   K may be a vector, in which case SIZE(A{1},1) must be LENGTH(K) and B
+%   will be LENGTH(K)-by-(LO+1)^2.
+%
+%   The ACN/N3D ambisonics normalization convention is assumed.
 %
 %   See also AMBINAV_INTERPOLATIONFILTERS.
 
@@ -43,7 +48,11 @@ function Ao = tylka2016(Ai, u, Lo, d, kVec)
 %     [1] Tylka and Choueiri (2016) Soundfield Navigation using an Array of
 %         Higher-Order Ambisonics Microphones.
 
-narginchk(5,5);
+narginchk(5,6);
+
+if nargin < 6
+    beta = []; % Use default regularization function
+end
 
 if numel(d) ~= 3
     error('Translation vector D should have three elements.');
@@ -59,7 +68,7 @@ kLen = length(kVec);
 
 Acat = cell2mat(Ai(:).');
 Ao = zeros(kLen,(Lo + 1)^2);
-F = AmbiNav_InterpolationFilters(Li,Lo,u,d,kVec);
+F = AmbiNav_InterpolationFilters(Li,Lo,u,d,kVec,beta);
 for kk = 1:length(kVec)
     Ao(kk,:) = Acat(kk,:) * F(:,:,kk).';
 end
