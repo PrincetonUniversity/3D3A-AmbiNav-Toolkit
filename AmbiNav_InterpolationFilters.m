@@ -9,7 +9,7 @@ function F = AmbiNav_InterpolationFilters(Li, Lo, u, r, kVec, beta)
 %
 %   The ACN/N3D ambisonics normalization convention is assumed.
 %
-%   See also AMBINAV_TRANSLATION, TYLKA2016.
+%   See also AMBINAV_INTERPOLATIONWEIGHTS, AMBINAV_TRANSLATION, TYLKA2016.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
