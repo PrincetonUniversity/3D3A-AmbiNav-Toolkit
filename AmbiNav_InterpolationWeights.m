@@ -8,6 +8,8 @@ function W = AmbiNav_InterpolationWeights(X, Xq)
 %   coordinate system. XQ should be either a Q-by-D matrix or a cell array
 %   with Q elements, each of which should be a 1-by-D vector, where Q is
 %   the number query points. W will then be a Q-by-N matrix.
+%
+%   See also SOUTHERN2009.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
