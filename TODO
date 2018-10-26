@@ -1,3 +1,4 @@
 1. Clean up MATLAB help notes and references.
 2. Write manual.
-3. Implement additional navigation methods.
+3. Implement Thiergart's navigation method.
+4. Streamline filtering of long signals.
