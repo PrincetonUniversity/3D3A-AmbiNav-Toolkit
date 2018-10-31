@@ -28,7 +28,6 @@ numMics = numel(ai);
 if numMics < 2
     error('Not enough microphones!');
 end
-ai = cell(size(ai));
 sf.p = cell(size(ai));
 A0_stft = cell(size(ai));
 A1_stft = cell(size(ai));

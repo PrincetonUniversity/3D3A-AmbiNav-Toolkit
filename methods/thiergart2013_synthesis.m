@@ -32,7 +32,7 @@ for nn = 1:No
         for kk = 1:sf.specLen
             d_source = sf.s_0{ii,kk} - r;
             Y = AmbiNav_SphericalHarmonicY(l, d_source);
-            C_factor = Y(n);
+            C_factor = Y(nn);
             H_dir = conj(ambPointSource(l,sf.kVec(kk),norm(d_source)));
             B_n(kk,ii) = (C_factor * H_dir * S_dir(kk,ii)) + (Q_factor * 1 * S_diff(kk,ii)); % Eq. (33), with H_diff = 1
         end
@@ -48,7 +48,7 @@ if k(1)==0
     DIM = find(size(k) ~= 1, 1, 'first');
     k = k(2:end);
     dropZero = true;
-    zeroVal = +~n;
+    zeroVal = +~l;
 else
     dropZero = false;
 end
