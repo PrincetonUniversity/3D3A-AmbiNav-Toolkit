@@ -136,15 +136,7 @@ switch numMics
     case 2
         k0 = norm(u{1} - u{2}) / (min(navDist) * max(navDist));
     otherwise
-        micDist = zeros(sum(1:(numMics-1)),1);
-        nn = 1;
-        for ii = 1:numMics
-            for jj = (ii+1):numMics
-                micDist(nn,1) = norm(u{ii} - u{jj});
-                nn = nn + 1;
-            end
-        end
-        delta = mode(micDist); % Approximate array spacing
+        delta = AmbiNav_ArraySpacing(u);
         k0 = 1 / delta;
 end
 
