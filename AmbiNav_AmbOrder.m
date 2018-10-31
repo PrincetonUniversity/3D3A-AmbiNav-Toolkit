@@ -1,11 +1,9 @@
-function acn = getACN(l, m)
-% GETACN Ambisonic channel number (ACN).
-%   N = GETACN(L, M) computes the ambisonic channel number N for a given
-%   order L and degree M pair. Either L or M may be an array provided that
-%   the other is either a scalar or an array with the same dimensions.
-%   Returns NaN if ABS(M)>L.
+function [l, m] = AmbiNav_AmbOrder(n)
+%AMBINAV_AMBORDER Ambisonics order and degree.
+%   [L, M] = AMBINAV_AMBORDER(N) returns the order L and degree M for ambisonics
+%   channel number (ACN) N. Returns NaN if N<0.
 %
-%   See also GETAMBORDER.
+%   See also AMBINAV_ACN.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -40,7 +38,8 @@ function acn = getACN(l, m)
 %   References:
 %     [1] Nachbar et al. (2011) ambiX - A Suggested Ambisonics Format.
 
-acn = l.*(l + 1) + m;
-acn(abs(m)>l) = NaN;
+l = floor(sqrt(n));
+l(n<0) = NaN;
+m = n - l.*(l + 1);
 
 end

@@ -1,9 +1,11 @@
-function [l, m] = getAmbOrder(n)
-%GETAMBORDER Ambisonics order and degree.
-%   [L, M] = GETAMBORDER(N) returns the order L and degree M for ambisonics
-%   channel number (ACN) N. Returns NaN if N<0.
+function acn = AmbiNav_ACN(l, m)
+% AMBINAV_ACN Ambisonic channel number (ACN).
+%   N = AMBINAV_ACN(L, M) computes the ambisonic channel number N for a given
+%   order L and degree M pair. Either L or M may be an array provided that
+%   the other is either a scalar or an array with the same dimensions.
+%   Returns NaN if ABS(M)>L.
 %
-%   See also GETACN.
+%   See also AMBINAV_AMBORDER.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -38,8 +40,7 @@ function [l, m] = getAmbOrder(n)
 %   References:
 %     [1] Nachbar et al. (2011) ambiX - A Suggested Ambisonics Format.
 
-l = floor(sqrt(n));
-l(n<0) = NaN;
-m = n - l.*(l + 1);
+acn = l.*(l + 1) + m;
+acn(abs(m)>l) = NaN;
 
 end
