@@ -53,7 +53,7 @@ else
     dropZero = false;
 end
 
-d = (1i^(l+1)*k).*AmbiNav_SphericalHankelH(l,1,k*r);
+d = (1i^(l+1)*k).*sphericalHankel(l,1,k*r);
 
 if dropZero
     if ~isempty(DIM)
@@ -62,5 +62,13 @@ if dropZero
         d = zeroVal;
     end
 end
+
+end
+
+function val = sphericalHankel(n,k,x)
+
+norm = sqrt(pi./(2*x));
+sgn = 2*(x>=0)-1;
+val = norm.*sgn.*(besselj(n+0.5,x)-((-1)^k).*1i.*bessely(n+0.5,x));
 
 end
