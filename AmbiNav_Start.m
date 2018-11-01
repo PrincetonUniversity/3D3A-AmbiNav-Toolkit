@@ -38,7 +38,6 @@ else
 end
 
 [AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
-addpath(fullfile(AmbiNavDir, 'grids'))
 addpath(fullfile(AmbiNavDir, 'methods'))
 
 disp('AmbiNav Toolkit found and initialized.')

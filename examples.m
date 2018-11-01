@@ -56,7 +56,7 @@ r = [0.1 0.2 0];
 Lout = 1;
 Nout = (Lout + 1)^2;
 
-[posMat, wQList] = AmbiNav_LoadGrid('fliege_36');
+[posMat, wQList] = loadGridFile('fliege_36');
 
 figure()
 hold all
