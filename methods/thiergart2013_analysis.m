@@ -43,10 +43,10 @@ for pp = 1:numMics
     A3_stft{pp} = getForwardSTFT(ai{pp}(:,4), sf.window, sf.noverlap, sf.nfft);
     for ii = 1:sf.numTimeFrames
         A_temp = [A0_stft{pp}(:,ii) A1_stft{pp}(:,ii) A2_stft{pp}(:,ii) A3_stft{pp}(:,ii)];
-        [r_I{pp,ii}, sf.psi{pp,ii}] = merimaa2005(A_temp);
+        [r_I{pp,ii}, sf.psi{pp,ii}] = merimaa2005(A_temp, 'normalize');
         for kk = 1:sf.specLen
             % DOA for mic p at each time-frequency bin
-            s_p{pp,ii,kk} = r_I{pp,ii}(kk,:) / norm(r_I{pp,ii}(kk,:));
+            s_p{pp,ii,kk} = r_I{pp,ii}(kk,:);
         end
     end
     sf.p{pp} = A0_stft{pp} * sqrt(4*pi); % Pressure at Each Mic
@@ -60,30 +60,5 @@ for ii = 1:sf.numTimeFrames
         sf.s_0{ii,kk} = AmbiNav_TriangulateSource(u, s_p(:,ii,kk), force2D);
     end
 end
-
-end
-
-function [rI, D] = merimaa2005(B)
-
-rho_0 = 1.225; % density of air in kg/m^3
-Z0 = rho_0 * getSoundSpeed(); % acoustic impedance of air in kg/(m^2 s)
-
-W = B(:,1)/sqrt(2);
-Y = B(:,2)/sqrt(3);
-Z = B(:,3)/sqrt(3);
-X = B(:,4)/sqrt(3);
-
-ex = [1 0 0];
-ey = [0 1 0];
-ez = [0 0 1];
-
-Xp = X*ex + Y*ey + Z*ez;
-
-temp = real(diag(conj(W))*Xp);
-rI = (sqrt(2)/Z0)*temp;
-
-F = sqrt(dot(temp,temp,2));
-E = abs(W).^2 + dot(Xp,Xp,2)/2;
-D = 1 - sqrt(2)*F./E;
 
 end
