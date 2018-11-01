@@ -63,7 +63,7 @@ end
 % Step 1
 for l = 0:2*maxOrder
     % Eq. 166 [2]; Eq. 3.2.103 [1]
-    Tz(1,getACN(l,0)+1,nzkd) = ((-1)^l)*sqrt(2*l+1)*AmbiNav_SphericalBesselJ(l,kd(nzkd));
+    Tz(1,getACN(l,0)+1,nzkd) = ((-1)^l)*sqrt(2*l+1)*sphericalBesselJ(l,kd(nzkd));
 end
 
 % Step 2
