@@ -1,12 +1,16 @@
 # Ambisonics Navigation (AmbiNav) Toolkit
 The AmbiNav toolkit is a collection of MATLAB functions that allows the user to simulate navigation.
 
+Note: this toolkit requires the 3D3A Lab's MATLAB Toolbox, which is available on GitHub.
 
 === Primary Uses ===
 A) 
 
 
 === Related Software ===
+The 3D3A Lab's MATLAB Toolbox
+https://github.com/PrincetonUniversity/3D3A-MATLAB-Toolbox
+
 Joseph G. Tylka's SABRE Toolkit
 https://github.com/PrincetonUniversity/3D3A-SABRE-Toolkit
 

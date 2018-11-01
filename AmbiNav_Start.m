@@ -31,8 +31,13 @@ function [] = AmbiNav_Start()
 %   SOFTWARE.
 %   ==============================================================================
 
+if exist('start3D3AMATLABToolbox','file') ~= 2
+    error('Must have the 3D3A-MATLAB-Toolbox added to the search path!');
+else
+    start3D3AMATLABToolbox();
+end
+
 [AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
-addpath(fullfile(AmbiNavDir, 'amb'))
 addpath(fullfile(AmbiNavDir, 'grids'))
 addpath(fullfile(AmbiNavDir, 'methods'))
 
