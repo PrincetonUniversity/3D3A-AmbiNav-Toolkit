@@ -47,7 +47,7 @@ if numel(d) ~= 3
     error('Translation vector D should have three elements.');
 end
 
-rpHat = diag(1./sqrt(dot(rp,rp,2)))*rp;
+rpHat = normalizeVector(rp, 2);
 T = exp(1i*shiftdim(kVec) * (rpHat * d.').');
 
 end
