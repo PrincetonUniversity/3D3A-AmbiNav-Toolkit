@@ -54,48 +54,8 @@ Y = zeros((L + 1)^2, size(R,1));
 for l = 0:L
     for m = -l:l
         acn = l*(l + 1) + m;
-        Y(acn + 1,:) = ambSphericalHarmonic(l, m, R);
+        Y(acn + 1,:) = ambSphericalHarmonicY(l, m, R, 'N3D');
     end
 end
 
-end
-
-function Y = ambSphericalHarmonic(l,m,r)
-
-% Needs at least 3 input arguments
-if nargin < 3
-    error('Not enough input arguments.');
-end
-
-if (l >= 0) && (abs(m) <= l)
-    if isvector(r)
-        [AZIM,ELEV,~] = cart2sph(r(1),r(2),r(3));
-    else
-        [AZIM,ELEV,~] = cart2sph(r(:,1),r(:,2),r(:,3));
-    end
-    
-    % Compute normalization term
-    Nlm = ambNormalization(l,abs(m));
-    
-    % Compute elevation term
-    Pl = legendre(l, sin(ELEV));
-    Plm = Pl(abs(m) + 1,:).';
-    
-    % Compute azimuth term
-    if m >= 0
-        Tm = cos(m * AZIM);
-    else % m < 0
-        Tm = sin(abs(m) * AZIM);
-    end
-    Y = Nlm*Plm.*Tm;
-else
-    warning('Invalid order and degree.');
-    Y = 0;
-end
-
-end
-
-function Nlm = ambNormalization(l,m)
-Nlm = ((-1)^m)*sqrt((2*l+1).*(2-(~m))/(4*pi)).*sqrt(factorial(l-m)./factorial(l+m));
-% Includes Condon-Shortley phase ((-1)^m) to cancel it in the Legendre term.
 end
