@@ -9,6 +9,8 @@ function Y = AmbiNav_SphericalHarmonicY(L, R)
 %       R may be a P-by-3 matrix of directions, where each row is a
 %           Cartesian vector.
 %       Y will be a (L + 1)^2-by-P matrix.
+%
+%   See also AMBSPHERICALHARMONICY.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
