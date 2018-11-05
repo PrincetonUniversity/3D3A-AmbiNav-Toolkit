@@ -84,11 +84,109 @@ v0 -- October 20\textsuperscript{th}, 2018\\
 
 % Abstract
 \begin{abstract}
-The ambisonics navigation (AmbiNav) toolkit is an open-source collection of MATLAB functions for simulating navigation.
+The ambisonics navigation (AmbiNav) toolkit is an open-source collection of MATLAB functions for performing virtual navigation of higher-order ambisonics recordings.
+This document describes the methods implemented in the toolkit and provides instructions for its use.
 \end{abstract}
 
 \section{Introduction}
+This document is structured as follows.
+In~\secref{sec:Conventions}, we describe the mathematical conventions followed in this toolkit.
+Finally, in~\secref{sec:Functions}, we describe the various functions included in the toolkit and how to use them.
 
+\subsection{Contents}
+The toolkit consists of the following items:
+\begin{enumerate}
+\item the core set of MATLAB functions for the toolkit (\texttt{/AmbiNav\_*.m});
+\item the source \LaTeX~files for this manual (\texttt{/doc/});
+\item a MATLAB file containing examples of how to use the toolkit (\texttt{/examples.m}); and
+\item MATLAB implementations of some published virtual navigation methods (\texttt{/methods/}).
+\end{enumerate}
+
+%%%% Conventions %%%%
+\section{Conventions}\label{sec:Conventions}
+Here, we use real-valued spherical harmonics as given by~\citet[section~2.2]{Zotter2009PhD}
+\begin{equation*}
+Y_l^m(\theta,\phi) = N_l^{|m|} P_l^{|m|} (\sin \theta) \times \left\{
+    \begin{array}{cl}
+	\cos m \phi & \textrm{for } m \geq 0,\\[8pt]
+	\sin |m| \phi & \textrm{for } m < 0,
+    \end{array}\right.
+\end{equation*}
+where $P_l^m$ is the associated Legendre polynomial of degree $l$ and order $m$,
+as defined in the MATLAB \texttt{legendre} function by\footnote{See:~\url{https://www.mathworks.com/help/matlab/ref/legendre.html}}
+\begin{equation*}
+P_l^m(x) = (-1)^m (1 - x^2)^{m/2} \frac{d^m}{dx^m} P_l(x), 
+\quad\quad \textrm{with} \quad\quad
+P_l(x) = \frac{1}{2^l l!} \left[ \frac{d^l}{dx^l}(x^2 - 1)^l \right],
+\end{equation*}
+and $N_l^m$ is a normalization term which, for the orthonormal (N3D)
+spherical harmonics with Condon-Shortley phase,\footnote{Note that including
+Condon-Shortley phase in the normalization term cancels it in the associated Legendre term.}
+is given by~\citep{Nachbar2011}
+\begin{equation*}
+N_l^m = (-1)^m \sqrt{\frac{(2l+1)(2 - \delta_m)}{4 \pi} \frac{(l-m)!}{(l+m)!}},
+\end{equation*}
+where $\delta_m$ is the Kronecker delta.
+With an inner product defined by integrating over all directions, the squared-norm of these spherical harmonics is thus given by
+\begin{equation*}
+\left\| Y_l^m \right\|^2 = 1.
+\end{equation*}
+
+We also adopt the ambisonics channel numbering (ACN) convention~\citep{Nachbar2011}
+such that for a spherical harmonic function of degree $l \in [0,\infty)$ and order $m \in [-l,l]$,
+the ACN index $n$ is given by $n = l (l + 1) + m$ and we denote the spherical harmonic function by $Y_n \equiv Y_l^m$.
+
+\section{MATLAB Functions}\label{sec:Functions}
+The core MATLAB functions included in the toolkit are listed and described in~\tabref{tab:Functions}.
+
+\begin{table}
+\centering
+  \begin{tabular}{| l | p{11cm} |}
+    \hline
+    \textbf{Function} & \textbf{Description} \\ \hline
+    \texttt{AmbiNav\_ArraySpacing} & Computes the (approximate) spacing between HOA microphones. \\ \hline
+    \texttt{AmbiNav\_CoefficientA} & Returns the recurrence coefficient $a$ for spherical harmonic translation \citep[Eq. (145)]{Zotter2009PhD}. \\ \hline
+    \texttt{AmbiNav\_CoefficientB} & Returns the recurrence coefficient $b$ for spherical harmonic translation \citep[Eq. (146)]{Zotter2009PhD}. \\ \hline
+    \texttt{AmbiNav\_InterpolationFilters} & Computes regularized least-squares interpolation filters as defined by \citet{TylkaChoueiri2016}. \\ \hline
+    \texttt{AmbiNav\_InterpolationWeights} & Computes linear interpolation weights for specified grid points and query points. \\ \hline
+    \texttt{AmbiNav\_KDThreshold} & Returns the pre-defined minimum translation distance, approximately 1 mm at 10 Hz. \\ \hline
+    \texttt{AmbiNav\_Pitch90} & Returns the ambisonics rotation matrix for $90^\circ$ pitch. \\ \hline
+    \texttt{AmbiNav\_PlaneWaveTranslation} & Computes plane-wave translation coefficients for a specified grid of directions and a specified translation vector. \\ \hline
+    \texttt{AmbiNav\_Roll90} & Returns the ambisonics rotation matrix for $90^\circ$ roll. \\ \hline
+    \texttt{AmbiNav\_SphericalHarmonicY} & Computes ACN/N3D real-valued spherical harmonics;
+    	returns a matrix of spherical harmonics up to a specified ambisonics order and for a specified grid of positions. \\ \hline
+    \texttt{AmbiNav\_Start} & Starts the AmbiNav Toolkit and the 3D3A MATLAB Toolbox. \\ \hline
+    \texttt{AmbiNav\_Translation} & Computes ambisonics translation coefficients for a specified translation vector. \\ \hline
+    \texttt{AmbiNav\_TriangulateSource} & Estimates the source position given microphone positions and corresponding directions-of-arrival. \\ \hline
+    \texttt{AmbiNav\_Yaw90} & Returns the ambisonics rotation matrix for $90^\circ$ yaw. \\ \hline
+    \texttt{AmbiNav\_YawRotation} & Returns the ambisonics rotation matrix for a specified yaw. \\ \hline
+    \texttt{AmbiNav\_ZRotation} & Returns the ambisonics rotation matrix to align the $z$-axis to a given direction. \\ \hline
+    \texttt{AmbiNav\_ZTranslation} & Returns the ambisonics translation coefficients for translation along the $z$-axis. \\ \hline
+    \end{tabular}
+    \caption{Core MATLAB functions in the toolkit.}
+    \label{tab:Functions}
+\end{table}
+
+\begin{table}
+\centering
+  \begin{tabular}{| l | p{11cm} |}
+    \hline
+    \textbf{Function} & \textbf{Description} \\ \hline
+    \texttt{gumerov2005} & Ambisonics navigation using translation coefficients \citep{GumerovDuraiswami2005,Zotter2009PhD}. \\ \hline
+    \texttt{schultz2013} & Ambisonics navigation using plane-wave translation \citep{SchultzSpors2013}. \\ \hline
+    \texttt{southern2009} & Ambisonics navigation using linear interpolation \citep{Southern2009}. \\ \hline
+    \texttt{thiergart2013} & Ambisonics navigation via sound field analysis and modeling \citep{Thiergart2013}. \\ \hline
+    \texttt{thiergart2013\_analysis} & Time-frequency domain analysis of a sound field \citep{Thiergart2013}. \\ \hline
+    \texttt{thiergart2013\_synthesis} & Ambisonics rendering of a modeled sound field \citep{Thiergart2013}. \\ \hline
+    \texttt{tylka2016} & Ambisonics navigation using least-squares interpolation filters \citep{TylkaChoueiri2016}. \\ \hline
+    \end{tabular}
+    \caption{Virtual navigation methods implemented in the toolkit.}
+    \label{tab:Methods}
+\end{table}
+
+\section*{Acknowledgements}
+This toolkit requires the 3D3A Lab's MATLAB Toolbox\footnote{Available online:~\url{https://github.com/PrincetonUniversity/3D3A-MATLAB-Toolbox}}
+by R.~Sridhar and J.~G.~Tylka.
 
 % References
 \bibliographystyle{unsrtnat}
