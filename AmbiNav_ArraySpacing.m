@@ -1,4 +1,14 @@
 function delta = AmbiNav_ArraySpacing(u)
+%AMBINAV_ARRAYSPACING Spacing between microphone positions.
+%   D = AMBINAV_ARRAYSPACING(U) returns the array spacing D given a cell
+%   array of microphone positions U.
+%
+%   For a single microphone (NUMEL(U) = 1), D = NORM(U{1}).
+%
+%   For two microphones (NUMEL(U) = 2), D = NORM(U{1} - U{2}).
+%
+%   Otherwise, D will be the most common element of the set of all pairwise
+%   distances between each unique pair of elements of U.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.

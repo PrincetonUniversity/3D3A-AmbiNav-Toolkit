@@ -1,5 +1,8 @@
 function [] = AmbiNav_Start()
 %AMBINAV_START Start the AmbiNav Toolkit.
+%   AMBINAV_START() first searches for and starts the 3D3A-MATLAB-Toolbox,
+%   then adds all subfolders of the AmbiNav Toolkit directory to the MATLAB
+%   search path.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
