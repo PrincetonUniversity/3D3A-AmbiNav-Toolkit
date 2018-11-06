@@ -2,7 +2,7 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 %SCHULTZ2009 Ambisonics navigation using plane-wave translation.
 %   B = SCHULTZ2013(A,LO,RP,D,K) computes the translated ambisonics
 %   potentials B, up to order LO, given the ambisonics potentials A, a grid
-%   of plane-wave directions RP (given in Cartesian coordinates), a
+%   of plane-wave source directions RP (given in Cartesian coordinates), a
 %   translation position vector D, and for angular wavenumber K.
 %
 %   K may be a vector, in which case SIZE(A,1) must be LENGTH(K) and B will
@@ -62,7 +62,7 @@ end
 Ni = size(Ai,2);
 
 MUi = Ai*AmbiNav_SphericalHarmonicY(sqrt(Ni)-1, pwGrid);
-T = AmbiNav_PlaneWaveTranslation(-pwGrid, d, kVec);
+T = AmbiNav_PlaneWaveTranslation(pwGrid, d, kVec);
 MUo = (MUi.*T)*diag(wQList);
 Ao = MUo*(AmbiNav_SphericalHarmonicY(Lo, pwGrid).');
 

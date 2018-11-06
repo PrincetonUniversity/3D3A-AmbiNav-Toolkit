@@ -1,9 +1,10 @@
 function T = AmbiNav_PlaneWaveTranslation(rp, d, kVec)
 %AMBINAV_PLANEWAVETRANSLATION Plane-wave translation coefficients matrix.
 %   T = AMBINAV_PLANEWAVETRANSLATION(RP,D,K) computes the plane-wave
-%   translation coefficients matrix T, for a grid of plane-wave directions
-%   RP (given in Cartesian coordinates), translation position vector D, and
-%   for angular wavenumber K.
+%   translation coefficients matrix T, for a grid of plane-wave source 
+%   directions RP (given in Cartesian coordinates), translation position
+%   vector D, and for angular wavenumber K. Note that the plane-wave source
+%   directions are opposite (negative) of their propagation directions.
 %
 %   K may be a vector, in which case T is LENGTH(K)-by-SIZE(RP,1).
 %
@@ -48,6 +49,6 @@ if numel(d) ~= 3
 end
 
 rpHat = normalizeVector(rp, 2);
-T = exp(1i*shiftdim(kVec) * (rpHat * d.').');
+T = exp(-1i*shiftdim(kVec) * (rpHat * d.').');
 
 end
