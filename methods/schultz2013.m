@@ -59,11 +59,9 @@ if numel(d) ~= 3
     error('Translation vector D should have three elements.');
 end
 
-Ni = size(Ai,2);
-
-MUi = Ai*AmbiNav_SphericalHarmonicY(sqrt(Ni)-1, pwGrid);
+MUi = a2mu(Ai,pwGrid,'N3D',false);
 T = AmbiNav_PlaneWaveTranslation(pwGrid, d, kVec);
-MUo = (MUi.*T)*diag(wQList);
-Ao = MUo*(AmbiNav_SphericalHarmonicY(Lo, pwGrid).');
+MUo = MUi.*T;
+Ao = mu2a(MUo,pwGrid,Lo,wQList,'N3D');
 
 end
