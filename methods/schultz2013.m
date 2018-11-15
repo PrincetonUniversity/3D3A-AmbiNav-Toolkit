@@ -52,7 +52,7 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 narginchk(5,6);
 
 if nargin < 6 || isempty(wQList)
-    wQList = 1/size(pwGrid,1);
+    wQList = [];
 end
 
 if numel(d) ~= 3
