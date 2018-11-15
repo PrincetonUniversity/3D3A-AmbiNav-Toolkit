@@ -1,4 +1,4 @@
-function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
+function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList, pinvFlag)
 %SCHULTZ2009 Ambisonics navigation using plane-wave translation.
 %   B = SCHULTZ2013(A,LO,RP,D,K) computes the translated ambisonics
 %   potentials B, up to order LO, given the ambisonics potentials A, a grid
@@ -12,6 +12,11 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 %
 %   B = SCHULTZ2013(A,LO,RP,D,K,WQ) uses quadrature weights WQ. If
 %   unspecified, WQ is given by 1/SIZE(RP,1).
+%
+%   B = SCHULTZ2013(A,LO,RP,D,K,WQ,PINVFLAG) additionally specifies the 
+%   plane-wave conversion method to use, where if PINVFLAG evaluates to
+%   true, a least-squares inversion is taken to compute the plane-wave
+%   signals. By default, PINVFLAG is false.
 %
 %   See also AMBINAV_PLANEWAVETRANSLATION.
 
@@ -49,17 +54,21 @@ function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList)
 %     [1] Schultz and Spors (2013) Data-based Binaural Synthesis Including 
 %         Rotational and Translatory Head-Movements.
 
-narginchk(5,6);
-
-if nargin < 6 || isempty(wQList)
-    wQList = [];
-end
+narginchk(5,7);
 
 if numel(d) ~= 3
     error('Translation vector D should have three elements.');
 end
 
-MUi = a2mu(Ai,pwGrid,'N3D',false);
+if nargin < 6 || isempty(wQList)
+    wQList = [];
+end
+
+if nargin < 7 || isempty(pinvFlag)
+    pinvFlag = false;
+end
+
+MUi = a2mu(Ai,pwGrid,'N3D',pinvFlag,wQList);
 T = AmbiNav_PlaneWaveTranslation(pwGrid, d, kVec);
 MUo = MUi.*T;
 Ao = mu2a(MUo,pwGrid,Lo,wQList,'N3D');
