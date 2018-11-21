@@ -60,7 +60,7 @@ kLen = length(kVec);
 Ni = (Li + 1)^2;
 No = (Lo + 1)^2;
 
-if R == 0
+if all(kVec*R < AmbiNav_KDThreshold())
     QzL = eye(No);
     QzR = eye(Ni);
 else
@@ -74,7 +74,7 @@ for kk = 1:kLen
     if kVec(kk)*R < AmbiNav_KDThreshold()
         T(:,:,kk) = eye(No,Ni);
     else
-        T(:,:,kk) = QzL*Tz(1:No,1:Ni,kk)/QzR;
+        T(:,:,kk) = QzL * Tz(1:No,1:Ni,kk) * (QzR.');
     end
 end
 
