@@ -1,6 +1,6 @@
 function Tz = AmbiNav_ZTranslation(kd, maxOrder)
 %AMBINAV_ZTRANSLATION Ambisonics translation along the z axis.
-%   T = AMBINAV_ZTRANSLATION(KD, L) computes the ambisonic translation
+%   T = AMBINAV_ZTRANSLATION(KD,L) computes the ambisonic translation
 %   coefficients matrix T, up to ambisonics order L and for non-dimensional
 %   frequency KD, given by product of the angular wavenumber K and the
 %   translation distance D.

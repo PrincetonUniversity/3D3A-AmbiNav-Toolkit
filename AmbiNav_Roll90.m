@@ -42,6 +42,6 @@ function Qc = AmbiNav_Roll90(maxOrder)
 %         Spherical Arrays.
 
 Qb = AmbiNav_Pitch90(maxOrder);
-Qc = Qb*AmbiNav_Yaw90(maxOrder)/Qb;
+Qc = Qb * AmbiNav_Yaw90(maxOrder) * (Qb.');
 
 end

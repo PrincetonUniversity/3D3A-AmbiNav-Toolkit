@@ -4,6 +4,8 @@ function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
 %   coefficients matrix Q, up to ambisonics order L, for a rotation of A 
 %   radians yaw, followed by a rotation of B radians pitch, and finally a
 %   rotation of G radians roll.
+%
+%   See also AMBINAV_YAWROTATION, AMBINAV_ROLL90, AMBINAV_PITCH90.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -41,9 +43,13 @@ function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
+Qr = AmbiNav_Roll90(maxOrder);
+Qp = AmbiNav_Pitch90(maxOrder);
+
 Y = AmbiNav_YawRotation(alpha, maxOrder);
-P = (AmbiNav_Roll90(maxOrder).') * AmbiNav_YawRotation(beta, maxOrder) * AmbiNav_Roll90(maxOrder);
-R = AmbiNav_Pitch90(maxOrder) * AmbiNav_YawRotation(gamma, maxOrder) * (AmbiNav_Pitch90(maxOrder).');
+P = (Qr.') * AmbiNav_YawRotation(beta, maxOrder) * Qr;
+R = Qp * AmbiNav_YawRotation(gamma, maxOrder) * (Qp.');
+
 Q = Y * P * R;
 
 end
