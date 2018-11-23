@@ -49,7 +49,8 @@ function Ao = tylka2018(Ai, u, Lo, r, kVec)
 %         Navigation Within an Array of Ambisonics Microphones (Under
 %         Review).
 
-xoIndx = xoFreqModel(u, r);
+xoFreqk = xoFreqModel(u, r);
+xoIndx = find(kVec >= xoFreqk,1,'first') - 1;
 
 % Split frequency ranges
 AiL = cell(size(Ai));
@@ -70,7 +71,7 @@ Ao = cat(1,AoL,AoH);
 
 end
 
-function xoIndx = xoFreqModel(u, r)
+function xoFreqk = xoFreqModel(u, r)
 navDist = zeros(size(u));
 for ii = 1:numel(u)
     navDist(ii) = norm(u{ii}-r);
@@ -84,5 +85,4 @@ switch numel(u)
         warning('Hybrid crossover frequency is not well-established for P > 2 microphones.');
         xoFreqk = 1 / max(navDist);
 end %% TODO: generalizing to P > 2 needs to be investigated more
-xoIndx = min([1 + floor(k2f(xoFreqk) * config.FFTLength / config.Fs), config.kLen]);
 end
