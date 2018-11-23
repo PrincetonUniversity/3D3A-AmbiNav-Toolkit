@@ -61,11 +61,11 @@ Ni = (Li + 1)^2;
 No = (Lo + 1)^2;
 
 if all(kVec*R < AmbiNav_KDThreshold())
-    QzL = eye(No);
-    QzR = eye(Ni);
+    Qi = eye(Ni);
+    Qo = eye(No);
 else
-    QzL = AmbiNav_ZRotation(AZIM, ELEV, Lo);
-    QzR = AmbiNav_ZRotation(AZIM, ELEV, Li);
+    Qi = AmbiNav_ZRotation(AZIM, ELEV, Li);
+    Qo = AmbiNav_ZRotation(AZIM, ELEV, Lo).';
 end
 
 T = zeros(No,Ni,kLen);
@@ -74,7 +74,7 @@ for kk = 1:kLen
     if kVec(kk)*R < AmbiNav_KDThreshold()
         T(:,:,kk) = eye(No,Ni);
     else
-        T(:,:,kk) = QzL * Tz(1:No,1:Ni,kk) * (QzR.');
+        T(:,:,kk) = Qo * Tz(1:No,1:Ni,kk) * Qi;
     end
 end
 

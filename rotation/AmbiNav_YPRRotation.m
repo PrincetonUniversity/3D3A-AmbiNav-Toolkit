@@ -1,8 +1,11 @@
-function [] = AmbiNav_Start()
-%AMBINAV_START Start the AmbiNav Toolkit.
-%   AMBINAV_START() first searches for and starts the 3D3A-MATLAB-Toolbox,
-%   then adds all subfolders of the AmbiNav Toolkit directory to the MATLAB
-%   search path.
+function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
+%AMBINAV_YPRROTATION Yaw-pitch-roll rotation of ambisonics.
+%   Q = AMBINAV_YPRROTATION(A,B,G,L) computes the ambisonic rotation
+%   coefficients matrix Q, up to ambisonics order L, for a rotation of A 
+%   radians yaw, followed by a rotation of B radians pitch, and finally a
+%   rotation of G radians roll.
+%
+%   See also AMBINAV_YAW, AMBINAV_PITCH, AMBINAV_ROLL.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -34,16 +37,16 @@ function [] = AmbiNav_Start()
 %   SOFTWARE.
 %   ==============================================================================
 
-if exist('start3D3AMATLABToolbox','file') ~= 2
-    error('Must have the 3D3A-MATLAB-Toolbox added to the search path!');
-else
-    start3D3AMATLABToolbox();
-end
+%   References:
+%     [1] Gumerov and Duraiswami (2005) Fast Multipole Methods for the
+%         Helmholtz Equation in Three Dimensions.
+%     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
+%         Spherical Arrays.
 
-[AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
-addpath(fullfile(AmbiNavDir, 'methods'))
-addpath(fullfile(AmbiNavDir, 'rotation'))
+Qa = AmbiNav_Yaw(alpha, maxOrder);
+Qb = AmbiNav_Pitch(beta, maxOrder);
+Qc = AmbiNav_Roll(gamma, maxOrder);
 
-disp('AmbiNav Toolkit found and initialized.')
+Q = Qa * Qb * Qc;
 
 end

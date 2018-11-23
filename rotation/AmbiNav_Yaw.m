@@ -1,11 +1,7 @@
-function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
-%AMBINAV_YAWROTATION Ambisonics rotation in yaw.
-%   Q = AMBINAV_YAWROTATION(A,B,G,L) computes the ambisonic rotation
-%   coefficients matrix Q, up to ambisonics order L, for a rotation of A 
-%   radians yaw, followed by a rotation of B radians pitch, and finally a
-%   rotation of G radians roll.
-%
-%   See also AMBINAV_YAWROTATION, AMBINAV_ROLL90, AMBINAV_PITCH90.
+function Qa = AmbiNav_Yaw(alpha, maxOrder)
+%AMBINAV_YAW Ambisonics rotation in yaw.
+%   Q = AMBINAV_YAW(A,L) computes the ambisonic rotation coefficients
+%   matrix Q, up to ambisonics order L, for a rotation of A radians yaw.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -43,13 +39,20 @@ function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qr = AmbiNav_Roll90(maxOrder);
-Qp = AmbiNav_Pitch90(maxOrder);
+HOATerms = (maxOrder + 1)^2;
+[nList, mList] = getAmbOrder(0:HOATerms-1);
 
-Y = AmbiNav_YawRotation(alpha, maxOrder);
-P = (Qr.') * AmbiNav_YawRotation(beta, maxOrder) * Qr;
-R = Qp * AmbiNav_YawRotation(gamma, maxOrder) * (Qp.');
-
-Q = Y * P * R;
+Qa = zeros(HOATerms);
+for ii = 1:HOATerms
+    for jj = 1:HOATerms
+        if (nList(ii) == nList(jj)) && (abs(mList(ii)) == abs(mList(jj)))
+            if mList(ii)*mList(jj) >= 0
+                Qa(ii,jj) = cos(mList(jj)*alpha);
+            else
+                Qa(ii,jj) = sin(mList(jj)*alpha);
+            end
+        end
+    end
+end
 
 end

@@ -1,8 +1,11 @@
-function [] = AmbiNav_Start()
-%AMBINAV_START Start the AmbiNav Toolkit.
-%   AMBINAV_START() first searches for and starts the 3D3A-MATLAB-Toolbox,
-%   then adds all subfolders of the AmbiNav Toolkit directory to the MATLAB
-%   search path.
+function Qz = AmbiNav_ZRotation(AZIM, ELEV, L)
+%AMBINAV_ZROTATION Ambisonics rotation to align the z axis.
+%   Q = AMBINAV_ZROTATION(AZIM,ELEV,L) computes the ambisonic rotation
+%   matrix Q, up to ambisonics order L, which aligns the z-axis in the
+%   rotated coordinate system with a certain azimuth and elevation (AZIM
+%   and ELEV, given in radians) in the original coordinate system.
+%
+%   See also AMBINAV_TRANSLATION, AMBINAV_YAWROTATION, AMBINAV_ROLL90.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -34,16 +37,15 @@ function [] = AmbiNav_Start()
 %   SOFTWARE.
 %   ==============================================================================
 
-if exist('start3D3AMATLABToolbox','file') ~= 2
-    error('Must have the 3D3A-MATLAB-Toolbox added to the search path!');
-else
-    start3D3AMATLABToolbox();
-end
+%   References:
+%     [1] Gumerov and Duraiswami (2005) Fast Multipole Methods for the
+%         Helmholtz Equation in Three Dimensions.
+%     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
+%         Spherical Arrays.
 
-[AmbiNavDir,~,~] = fileparts(which('AmbiNav_Start'));
-addpath(fullfile(AmbiNavDir, 'methods'))
-addpath(fullfile(AmbiNavDir, 'rotation'))
+Qa = AmbiNav_Yaw(AZIM, L);
+Qb = AmbiNav_Pitch(ELEV - (pi/2),L);
 
-disp('AmbiNav Toolkit found and initialized.')
+Qz = Qa * Qb;
 
 end

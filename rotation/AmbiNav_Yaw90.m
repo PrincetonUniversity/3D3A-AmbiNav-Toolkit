@@ -1,16 +1,9 @@
-function Qz = AmbiNav_ZRotation(AZIM, ELEV, L)
-%AMBINAV_ZROTATION Ambisonics rotation to align the z axis.
-%   Q = AMBINAV_ZROTATION(AZIM,ELEV,L) computes the ambisonic rotation
-%   matrix Q, up to ambisonics order L, which aligns the z-axis in the
-%   rotated coordinate system with a certain azimuth and elevation (AZIM
-%   and ELEV, given in radians) in the original coordinate system.
+function Qa = AmbiNav_Yaw90(maxOrder)
+%AMBINAV_YAW90 Ambisonics rotation of 90 degrees yaw.
+%   Q = AMBINAV_YAW90(L) computes the ambisonic rotation coefficients
+%   matrix Q, up to ambisonics order L, for a rotation of 90 degrees yaw.
 %
-%   Note that this matrix is defined to rotate a column-vector of basis
-%   functions when multiplied on the left, so to rotate a column-vector of 
-%   expansion coefficients, the inverse of Q should be multiplied on the
-%   left.
-%
-%   See also AMBINAV_TRANSLATION, AMBINAV_YAWROTATION, AMBINAV_ROLL90.
+%   See also AMBINAV_YAW.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -48,11 +41,24 @@ function Qz = AmbiNav_ZRotation(AZIM, ELEV, L)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qr = AmbiNav_Roll90(L);
+HOATerms = (maxOrder + 1)^2;
+[nList, mList] = getAmbOrder(0:HOATerms-1);
 
-Qa = AmbiNav_YawRotation(AZIM, L);
-Qe = (Qr.') * AmbiNav_YawRotation((pi/2) - ELEV, L) * Qr;
-
-Qz = Qa * Qe;
+Qa = zeros(HOATerms);
+for ii = 1:HOATerms
+    for jj = 1:HOATerms
+        if (nList(ii) == nList(jj)) && (abs(mList(ii)) == abs(mList(jj)))
+            if mList(ii)*mList(jj) >= 0
+                if ~mod(mList(jj),2)
+                    Qa(ii,jj) = (-1)^(mList(jj)/2);
+                end
+            else
+                if mod(mList(jj),2)
+                    Qa(ii,jj) = (-1)^((mList(jj)-1)/2);
+                end
+            end
+        end
+    end
+end
 
 end
