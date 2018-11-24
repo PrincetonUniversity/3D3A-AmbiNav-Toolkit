@@ -79,7 +79,7 @@
 Joseph G.~Tylka\\
 \href{mailto:josephgt@princeton.edu}{josephgt@princeton.edu}\\
 \vspace{\baselineskip}
-v0 -- October 20\textsuperscript{th}, 2018\\
+v0 -- November 24\textsuperscript{th}, 2018\\
 \end{centering}
 
 % Abstract
@@ -144,25 +144,40 @@ The core MATLAB functions included in the toolkit are listed and described in~\t
   \begin{tabular}{| l | p{11cm} |}
     \hline
     \textbf{Function} & \textbf{Description} \\ \hline
-    \texttt{AmbiNav\_ArraySpacing} & Computes the (approximate) spacing between HOA microphones. \\ \hline
-    \texttt{AmbiNav\_CoefficientA} & Returns the recurrence coefficient $a$ for spherical harmonic translation \citep[Eq. (145)]{Zotter2009PhD}. \\ \hline
-    \texttt{AmbiNav\_CoefficientB} & Returns the recurrence coefficient $b$ for spherical harmonic translation \citep[Eq. (146)]{Zotter2009PhD}. \\ \hline
+    \texttt{AmbiNav\_ArraySpacing} & Computes the (approximate) spacing between adjacent HOA microphones. \\ \hline
+    \texttt{AmbiNav\_CheckValidity} & Determines valid microphones based on microphone, listener, and source positions \citep[Sec.~3.3]{TylkaChoueiri2016}. \\ \hline
+    \texttt{AmbiNav\_CoefficientA} & Returns the recurrence coefficient $a$ for spherical harmonic translation \citep[Eq.~(145)]{Zotter2009PhD}. \\ \hline
+    \texttt{AmbiNav\_CoefficientB} & Returns the recurrence coefficient $b$ for spherical harmonic translation \citep[Eq.~(146)]{Zotter2009PhD}. \\ \hline
     \texttt{AmbiNav\_InterpolationFilters} & Computes regularized least-squares interpolation filters as defined by \citet{TylkaChoueiri2016}. \\ \hline
     \texttt{AmbiNav\_InterpolationWeights} & Computes linear interpolation weights for specified grid points and query points. \\ \hline
     \texttt{AmbiNav\_KDThreshold} & Returns the pre-defined minimum translation distance, approximately 1 mm at 10 Hz. \\ \hline
-    \texttt{AmbiNav\_Pitch90} & Returns the ambisonics rotation matrix for $90^\circ$ pitch. \\ \hline
     \texttt{AmbiNav\_PlaneWaveTranslation} & Computes plane-wave translation coefficients for a specified grid of directions and a specified translation vector. \\ \hline
-    \texttt{AmbiNav\_Roll90} & Returns the ambisonics rotation matrix for $90^\circ$ roll. \\ \hline
     \texttt{AmbiNav\_Start} & Starts the AmbiNav Toolkit and the 3D3A MATLAB Toolbox. \\ \hline
     \texttt{AmbiNav\_Translation} & Computes ambisonics translation coefficients for a specified translation vector. \\ \hline
     \texttt{AmbiNav\_TriangulateSource} & Estimates the source position given microphone positions and corresponding directions-of-arrival. \\ \hline
-    \texttt{AmbiNav\_Yaw90} & Returns the ambisonics rotation matrix for $90^\circ$ yaw. \\ \hline
-    \texttt{AmbiNav\_YawRotation} & Returns the ambisonics rotation matrix for a specified yaw. \\ \hline
-    \texttt{AmbiNav\_ZRotation} & Returns the ambisonics rotation matrix to align the $z$-axis to a given direction. \\ \hline
     \texttt{AmbiNav\_ZTranslation} & Returns the ambisonics translation coefficients for translation along the $z$-axis. \\ \hline
     \end{tabular}
     \caption{Core MATLAB functions in the toolkit.}
     \label{tab:Functions}
+\end{table}
+
+\begin{table}
+\centering
+  \begin{tabular}{| l | p{13cm} |}
+    \hline
+    \textbf{Function} & \textbf{Description} \\ \hline
+    \texttt{AmbiNav\_Pitch} & Returns the ambisonics rotation matrix for a specified pitch. \\ \hline
+    \texttt{AmbiNav\_Pitch90} & Returns the ambisonics rotation matrix for $90^\circ$ pitch. \\ \hline
+    \texttt{AmbiNav\_Roll} & Returns the ambisonics rotation matrix for a specified roll. \\ \hline
+    \texttt{AmbiNav\_Roll90} & Returns the ambisonics rotation matrix for $90^\circ$ roll. \\ \hline
+    \texttt{AmbiNav\_Rotate} & Applies a rotation matrix to ambisonics signals. \\ \hline
+    \texttt{AmbiNav\_Yaw} & Returns the ambisonics rotation matrix for a specified yaw. \\ \hline
+    \texttt{AmbiNav\_Yaw90} & Returns the ambisonics rotation matrix for $90^\circ$ yaw. \\ \hline
+    \texttt{AmbiNav\_YPRRotation} & Returns the ambisonics rotation matrix for a specified yaw-pitch-roll. \\ \hline
+    \texttt{AmbiNav\_ZRotation} & Returns the ambisonics rotation matrix to align the $z$-axis to a given direction. \\ \hline
+    \end{tabular}
+    \caption{Rotation functions in the toolkit.}
+    \label{tab:Rotation}
 \end{table}
 
 \begin{table}
@@ -177,6 +192,7 @@ The core MATLAB functions included in the toolkit are listed and described in~\t
     \texttt{thiergart2013\_analysis} & Time-frequency domain analysis of a sound field \citep{Thiergart2013}. \\ \hline
     \texttt{thiergart2013\_synthesis} & Ambisonics rendering of a modeled sound field \citep{Thiergart2013}. \\ \hline
     \texttt{tylka2016} & Ambisonics navigation using least-squares interpolation filters \citep{TylkaChoueiri2016}. \\ \hline
+    \texttt{tylka2018} & Ambisonics navigation using hybrid interpolation filters \citep{TylkaChoueiri2018}. \\ \hline
     \end{tabular}
     \caption{Virtual navigation methods implemented in the toolkit.}
     \label{tab:Methods}
