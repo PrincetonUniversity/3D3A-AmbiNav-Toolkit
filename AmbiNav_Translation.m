@@ -64,8 +64,8 @@ if all(kVec*R < AmbiNav_KDThreshold())
     Qi = eye(Ni);
     Qo = eye(No);
 else
-    Qi = AmbiNav_ZRotation(AZIM, ELEV, Li);
-    Qo = AmbiNav_ZRotation(AZIM, ELEV, Lo).';
+    Qi = AmbiNav_ZRotation(AZIM, ELEV, Li).';
+    Qo = AmbiNav_ZRotation(AZIM, ELEV, Lo);
 end
 
 T = zeros(No,Ni,kLen);

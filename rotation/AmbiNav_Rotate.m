@@ -36,10 +36,10 @@ function B = AmbiNav_Rotate(A, Q)
 
 narginchk(2,2);
 
-if size(A,2) ~= size(Q,2)
+if size(A,2) ~= size(Q,1)
     error('Dimension mismatch between signals and rotation matrix.');
 end
 
-B = A * Q.';
+B = A * Q;
 
 end
