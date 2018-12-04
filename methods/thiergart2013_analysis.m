@@ -71,7 +71,8 @@ sf.window = hamming(sf.nfft);
 if sf.nfft > IRLen
     warning('Due to a large array spacing and short audio length, the STFT has very few time frames.')
 end
-sf.numTimeFrames = fix((IRLen-sf.noverlap)/(sf.nfft-sf.noverlap));
+sf.padSTFT = true; % Zero-pad signal before computing STFT; see getForwardSTFT
+sf.numTimeFrames = STFT_len2part(IRLen, sf.nfft, sf.noverlap, sf.padSTFT);
 sf.kVec = f2k(getFreqVec(Fs,sf.nfft));
 sf.specLen = 1 + sf.nfft/2;
 
@@ -89,10 +90,10 @@ r_I = cell(numMics,sf.numTimeFrames);
 s_p = cell(numMics,sf.numTimeFrames,sf.specLen);
 sf.psi = cell(numMics,sf.numTimeFrames);
 for pp = 1:numMics
-    A0_stft{pp} = getForwardSTFT(ai{pp}(:,1), sf.window, sf.noverlap, sf.nfft);
-    A1_stft{pp} = getForwardSTFT(ai{pp}(:,2), sf.window, sf.noverlap, sf.nfft);
-    A2_stft{pp} = getForwardSTFT(ai{pp}(:,3), sf.window, sf.noverlap, sf.nfft);
-    A3_stft{pp} = getForwardSTFT(ai{pp}(:,4), sf.window, sf.noverlap, sf.nfft);
+    A0_stft{pp} = getForwardSTFT(ai{pp}(:,1), sf.window, sf.noverlap, sf.nfft, sf.padSTFT);
+    A1_stft{pp} = getForwardSTFT(ai{pp}(:,2), sf.window, sf.noverlap, sf.nfft, sf.padSTFT);
+    A2_stft{pp} = getForwardSTFT(ai{pp}(:,3), sf.window, sf.noverlap, sf.nfft, sf.padSTFT);
+    A3_stft{pp} = getForwardSTFT(ai{pp}(:,4), sf.window, sf.noverlap, sf.nfft, sf.padSTFT);
     for ii = 1:sf.numTimeFrames
         A_temp = [A0_stft{pp}(:,ii) A1_stft{pp}(:,ii) A2_stft{pp}(:,ii) A3_stft{pp}(:,ii)];
         [r_I{pp,ii}, sf.psi{pp,ii}] = merimaa2005(A_temp, 'normalize');

@@ -74,7 +74,7 @@ for ii = 1:sf.numTimeFrames
 end
 
 %% Assemble Output Signals
-outLen = (sf.numTimeFrames - 1)*(sf.nfft - sf.noverlap) + sf.nfft;
+outLen = STFT_part2len(sf.numTimeFrames, sf.nfft, sf.noverlap, sf.padSTFT);
 No = (Lo + 1)^2;
 a_out = zeros(outLen,No);
 for nn = 1:No
@@ -89,7 +89,7 @@ for nn = 1:No
             B_n(kk,ii) = (C_factor * H_dir * S_dir(kk,ii)) + (Q_factor * 1 * S_diff(kk,ii)); % Eq. (33), with H_diff = 1
         end
     end
-    a_out(:,nn) = getInverseSTFT(B_n, sf.window, sf.noverlap, sf.nfft);
+    a_out(:,nn) = getInverseSTFT(B_n, sf.window, sf.noverlap, sf.nfft, sf.padSTFT);
 end
 
 end
