@@ -102,7 +102,7 @@ for pp = 1:numMics
             s_p{pp,ii,kk} = r_I{pp,ii}(kk,:);
         end
     end
-    sf.p{pp} = A0_stft{pp} * sqrt(4*pi); % Pressure at Each Mic
+    sf.p{pp} = A0_stft{pp} * sqrt(4*pi / ambNormSquared(0,'N3D')); % Pressure at Each Mic
 end
 
 %% Estimate Source Positions

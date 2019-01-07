@@ -65,6 +65,9 @@ for ii = 1:sf.numTimeFrames
         G_dir_ref = sqrt(Gamma_ref / (1 + Gamma_ref)); % Eq. (8)
         S_dir_ref = G_dir_ref * S_ref; % Eq. (7)
         H_dir = conj(ambRadialFilter(0,sf.kVec(kk),norm(d_source))); % = conj((1/norm(d_source)) * exp(1i*sf.kVec(kk)*norm(d_source)));
+            % NOTE: complex conjugatation is needed because the STFT uses
+            % the standard FFT convention, whereas the acoustic potential
+            % is typically computed using the conjugated Fourier convetion.
         S_dir(kk,ii) = S_dir_ref ./ H_dir; % Eq. (6)
         
         G_diff_ref = sqrt(1 / (1 + Gamma_ref)); % Eq. (14a)
@@ -79,13 +82,14 @@ No = (Lo + 1)^2;
 a_out = zeros(outLen,No);
 for nn = 1:No
     [l,m] = getAmbOrder(nn-1);
-    Q_factor = sqrt(1 / (4*pi));
+    Q_factor = sqrt(ambNormSquared(l,'N3D') / (4*pi));
     B_n = zeros(sf.nfft,sf.numTimeFrames);
     for ii = 1:sf.numTimeFrames
         for kk = 1:sf.specLen
             d_source = sf.s_0{ii,kk} - r;
             C_factor = ambSphericalHarmonicY(l, m, d_source, 'N3D');
             H_dir = conj(ambRadialFilter(l,sf.kVec(kk),norm(d_source)));
+                % See note about complex conjugation above
             B_n(kk,ii) = (C_factor * H_dir * S_dir(kk,ii)) + (Q_factor * 1 * S_diff(kk,ii)); % Eq. (33), with H_diff = 1
         end
     end
