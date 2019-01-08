@@ -1,8 +1,8 @@
-function B = AmbiNav_Rotate(A, Q)
+function Br = AmbiNav_Rotate(B, Q)
 %AMBINAV_ROTATE Apply rotation to ambisonics signals.
-%   B = AMBINAV_ROTATE(A,Q) applied the rotation matrix Q to the ambisonics
-%   signals A (where the signals are stored as the columns of A) and
-%   returns the resulting signals, B.
+%   BR = AMBINAV_ROTATE(B,Q) applies the rotation matrix Q to the
+%   ambisonics signals B (where the signals are stored as the columns of B)
+%   and returns the resulting signals, BR.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -36,10 +36,10 @@ function B = AmbiNav_Rotate(A, Q)
 
 narginchk(2,2);
 
-if size(A,2) ~= size(Q,1)
+if size(B,2) ~= size(Q,1)
     error('Dimension mismatch between signals and rotation matrix.');
 end
 
-B = A * Q;
+Br = B * Q;
 
 end

@@ -1,19 +1,19 @@
 function [Ao, MUo] = schultz2013(Ai, Lo, pwGrid, d, kVec, wQList, pinvFlag)
 %SCHULTZ2009 Ambisonics navigation using plane-wave translation.
-%   B = SCHULTZ2013(A,LO,RP,D,K) computes the translated ambisonics
-%   potentials B, up to order LO, given the ambisonics potentials A, a grid
+%   A = SCHULTZ2013(B,L,RP,D,K) computes the translated ambisonics
+%   potentials A, up to order L, given the ambisonics potentials B, a grid
 %   of plane-wave source directions RP (given in Cartesian coordinates), a
 %   translation position vector D, and for angular wavenumber K.
 %
-%   K may be a vector, in which case SIZE(A,1) must be LENGTH(K) and B will
+%   K may be a vector, in which case SIZE(B,1) must be LENGTH(K) and A will
 %   be LENGTH(K)-by-(LO+1)^2.
 %
 %   The ACN/N3D ambisonics normalization convention is assumed.
 %
-%   B = SCHULTZ2013(A,LO,RP,D,K,WQ) uses quadrature weights WQ. If
+%   A = SCHULTZ2013(B,L,RP,D,K,WQ) uses quadrature weights WQ. If
 %   unspecified, WQ is given by 1/SIZE(RP,1).
 %
-%   B = SCHULTZ2013(A,LO,RP,D,K,WQ,PINVFLAG) additionally specifies the 
+%   A = SCHULTZ2013(B,L,RP,D,K,WQ,PINVFLAG) additionally specifies the 
 %   plane-wave conversion method to use, where if PINVFLAG evaluates to
 %   true, a least-squares inversion is taken to compute the plane-wave
 %   signals. By default, PINVFLAG is false.

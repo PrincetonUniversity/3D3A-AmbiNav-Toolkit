@@ -1,13 +1,13 @@
 function Ao = tylka2018(Ai, u, Lo, r, kVec)
 %TYLKA2018 Ambisonics navigation using hybrid interpolation filters.
-%   B = TYLKA2018(A,U,LO,R,K) computes the interpolated ambisonics signals
-%   B, up to order LO and interpolated to position vector R (given in
-%   Cartesian coordinates), given the ambisonics signals A measured from
+%   A = TYLKA2018(B,U,L,R,K) computes the interpolated ambisonics signals
+%   A, up to order L and interpolated to position vector R (given in
+%   Cartesian coordinates), given the ambisonics signals B measured from
 %   positions U, and for angular wavenumber K.
 %
-%   A and U should both be cell arrays with the same number of elements.
+%   B and U should both be cell arrays with the same number of elements.
 %
-%   K may be a vector, in which case SIZE(A{1},1) must be LENGTH(K) and B
+%   K may be a vector, in which case SIZE(B{1},1) must be LENGTH(K) and A
 %   will be LENGTH(K)-by-(LO+1)^2.
 %
 %   The ACN/N3D ambisonics normalization convention is assumed.

@@ -1,17 +1,17 @@
 function ao = thiergart2013(ai, u, Lo, r, Fs, nfft, refMic, force2D)
 %THIERGART2013 Ambisonics navigation via sound field analysis and modeling.
-%   B = THIERGART2013(A,U,LO,R,FS) computes the ambisonics signals B, up to
-%   order LO, at the desired listening position R given ambisonics input
-%   signals A recorded at positions U and at sampling rate FS.
+%   A = THIERGART2013(B,U,L,R,FS) computes the ambisonics signals A, up to
+%   order L, at the desired listening position R given ambisonics input
+%   signals B recorded at positions U and at sampling rate FS.
 %
-%   B = THIERGART2013(A,U,LO,R,FS,NFFT) additionally specifies the NFFT to
+%   A = THIERGART2013(B,U,L,R,FS,NFFT) additionally specifies the NFFT to
 %   be used in taking the short-time Fourier transform.
 %
-%   B = THIERGART2013(A,U,LO,R,FS,NFFT,REFMIC) additionally specifies which
+%   A = THIERGART2013(B,U,L,R,FS,NFFT,REFMIC) additionally specifies which
 %   microphone to be used as a reference. By default, the nearest
 %   microphone to the listening position is used.
 %
-%   B = THIERGART2013(A,U,LO,R,FS,NFFT,REFMIC,FORCE2D) optionally forces
+%   A = THIERGART2013(B,U,L,R,FS,NFFT,REFMIC,FORCE2D) optionally forces
 %   all sound field analysis and modeling to be taken in the horizontal
 %   plane (i.e., 2D only) by ignoring the third element of each position
 %   vector. By default, FORCE2D evaluates to false.

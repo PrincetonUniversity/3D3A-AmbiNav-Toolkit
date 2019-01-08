@@ -1,8 +1,8 @@
-function [B, v] = AmbiNav_CheckValidity(A, u, r, s)
+function [Bv, uv] = AmbiNav_CheckValidity(B, u, r, s)
 %AMBINAV_CHECKVALIDITY Identify valid microphones.
-%   [B,V] = AMBINAV_CHECKVALIDITY(A,U,R,S) given a set of ambisonics
-%   microphones with signals A and positions U, this function returns the
-%   signals B and positions V for a subset of those microphones, each of 
+%   [BV,UV] = AMBINAV_CHECKVALIDITY(B,U,R,S) given a set of ambisonics
+%   microphones with signals B and positions U, this function returns the
+%   signals BV and positions UV for a subset of those microphones, each of 
 %   which provides a valid description of the sound field at the listening
 %   position R given source position(s) S.
 %
@@ -42,7 +42,7 @@ function [B, v] = AmbiNav_CheckValidity(A, u, r, s)
 if nargin < 4 || isempty(s)
     d = cell(size(u));
     for ii = 1:numel(u)
-        d{ii} = estimateSourceDirection(A{ii}, 'N3D');
+        d{ii} = estimateSourceDirection(B{ii}, 'N3D');
     end
     s = {AmbiNav_TriangulateSource(u, d)};
 end
@@ -69,13 +69,13 @@ end
 
 if ~any(mask(:))
     warning('No valid microphones, using nearest.');
-    v = cell(1);
-    [v{1}, indx] = findNearest(cell2mat(u(:)), r, 'l2', 1);
+    uv = cell(1);
+    [uv{1}, indx] = findNearest(cell2mat(u(:)), r, 'l2', 1);
 else
     indx = find(mask);
-    v = u(indx);
+    uv = u(indx);
 end
 
-B = A(indx);
+Bv = B(indx);
 
 end

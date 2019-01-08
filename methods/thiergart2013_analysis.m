@@ -1,14 +1,14 @@
 function sf = thiergart2013_analysis(ai, u, Fs, nfft, force2D)
 %THIERGART2013_ANALYSIS Time-frequency domain analysis of a sound field.
-%   SF = THIERGART2013_ANALYSIS(A,U,FS) returns a struct SF containing
+%   SF = THIERGART2013_ANALYSIS(B,U,FS) returns a struct SF containing
 %   sound field properties computed via time-frequency domain analysis and
-%   source triangulation, given ambisonics signals A measured from
+%   source triangulation, given ambisonics signals B measured from
 %   positions U and at a sampling rate FS.
 %
-%   SF = THIERGART2013_ANALYSIS(A,U,FS,NFFT) additionally specifies the
+%   SF = THIERGART2013_ANALYSIS(B,U,FS,NFFT) additionally specifies the
 %   NFFT to be used in taking the short-time Fourier transform.
 %
-%   SF = THIERGART2013_ANALYSIS(A,U,FS,NFFT,FORCE2D) optionally forces all
+%   SF = THIERGART2013_ANALYSIS(B,U,FS,NFFT,FORCE2D) optionally forces all
 %   sound field analysis and modeling to be taken in the horizontal plane
 %   (i.e., 2D only) by ignoring the third element of each position vector.
 %

@@ -1,10 +1,10 @@
 function a_out = thiergart2013_synthesis(sf, u, Lo, r, refMic)
 %THIERGART2013_SYNTHESIS Ambisonics rendering of a modeled sound field.
-%   B = THIERGART2013_SYNTHESIS(SF,U,LO,R) returns the rendered ambisonics
-%   signals B, up to order LO, at the desired listening position R given a
+%   A = THIERGART2013_SYNTHESIS(SF,U,L,R) returns the rendered ambisonics
+%   signals A, up to order L, at the desired listening position R given a
 %   sound field model SF and microphone positions U.
 %
-%   B = THIERGART2013_SYNTHESIS(SF,U,LO,R,REFMIC) additionally specifies
+%   A = THIERGART2013_SYNTHESIS(SF,U,L,R,REFMIC) additionally specifies
 %   which microphone to be used as a reference. By default, the nearest
 %   microphone to the listening position is used.
 %
