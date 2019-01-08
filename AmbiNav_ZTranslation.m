@@ -104,12 +104,12 @@ for lo = 1:L
 end
 
 % Step 5
-for lo = 0:L
-    for li = (lo+1):L
-        for mm = -lo:lo
+for li = 0:(L-1)
+    for lo = (li+1):L
+        for mm = -li:li
             % Eq. 162 [2]; Eq. 3.2.96 [1]
             coeff = (-1)^(lo+li);
-            Tz(getACN(li,mm)+1,getACN(lo,mm)+1,nzkd) = coeff*Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd);
+            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = coeff * Tz(getACN(li,mm)+1,getACN(lo,mm)+1,nzkd);
         end
     end
 end
