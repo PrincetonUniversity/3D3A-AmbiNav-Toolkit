@@ -1,4 +1,4 @@
-function Tz = AmbiNav_ZTranslation(kd, maxOrder)
+function Tz = AmbiNav_ZTranslation(kd, L)
 %AMBINAV_ZTRANSLATION Ambisonics translation along the z axis.
 %   T = AMBINAV_ZTRANSLATION(KD,L) computes the ambisonic translation
 %   coefficients matrix T, up to ambisonics order L and for non-dimensional
@@ -50,80 +50,82 @@ function Tz = AmbiNav_ZTranslation(kd, maxOrder)
 narginchk(2,2);
 
 kdLen = length(kd);
-HOATerms = (maxOrder + 1)^2;
-Tz = zeros(HOATerms, (2*maxOrder+1)^2, kdLen);
+N = (L + 1)^2;
+Tz = zeros(N, (2*L+1)^2, kdLen);
 zkd = (kd==0) | (kd < AmbiNav_KDThreshold());
 nzkd = ~zkd;
 
 zkdPos = find(zkd);
-for ii = 1:sum(zkd)
-    Tz(:,:,zkdPos(ii)) = eye(HOATerms, (2*maxOrder+1)^2);
+for iii = 1:sum(zkd)
+    Tz(:,:,zkdPos(iii)) = eye(N, (2*L+1)^2);
 end
 
 % Step 1
-for l = 0:2*maxOrder
+for li = 0:2*L
     % Eq. 166 [2]; Eq. 3.2.103 [1]
-    Tz(1,getACN(l,0)+1,nzkd) = ((-1)^l)*sqrt(2*l+1)*sphericalBesselJ(l,kd(nzkd));
+    Tz(getACN(0,0)+1,getACN(li,0)+1,nzkd) = ((-1)^li)*sqrt(2*li+1)*sphericalBesselJ(li,kd(nzkd));
 end
 
 % Step 2
-for n = 1:maxOrder
-    m = n;
-    for l = n:(2*maxOrder-n)
+for lo = 1:L
+    mm = lo;
+    for li = lo:(2*L-lo)
         % Eq. 163 [2]; Eq. 3.2.104 [1]
-        term1 = AmbiNav_CoefficientB(l,-m)*Tz(getACN(m-1,m-1)+1,getACN(l-1,m-1)+1,nzkd);
-        term2 = AmbiNav_CoefficientB(l+1,m-1)*Tz(getACN(m-1,m-1)+1,getACN(l+1,m-1)+1,nzkd);
-        Tz(getACN(n,m)+1,getACN(l,n)+1,nzkd) = (term1-term2)/AmbiNav_CoefficientB(m,-m);
+        term1 = AmbiNav_CoefficientB(li+1,mm-1) * Tz(getACN(lo-1,mm-1)+1,getACN(li+1,mm-1)+1,nzkd);
+        term2 = AmbiNav_CoefficientB(li,-mm) * Tz(getACN(lo-1,mm-1)+1,getACN(li-1,mm-1)+1,nzkd);
+        Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2) / AmbiNav_CoefficientB(lo,-mm);
     end
 end
 
-% Step 3
-for m = 0:(maxOrder-1)
-    for n = m:(maxOrder-1)
-        for l = (n+1):(2*maxOrder - (n+1))
+% Step 3 -- note: change lo --> (lo-1); (lo+1) --> lo; (lo-1) --> (lo-2)
+for mm = 0:(L-1)
+    for lo = mm:(L-1) % change to (mm+1):L
+        for li = (lo+1):(2*L - (lo+1))
             % Eq. 163 [2]; Eq. 3.2.90 [1]
-            term1 = AmbiNav_CoefficientA(l,m)*Tz(getACN(n,m)+1,getACN(l+1,m)+1,nzkd);
-            term2 = AmbiNav_CoefficientA(l-1,m)*Tz(getACN(n,m)+1,getACN(l-1,m)+1,nzkd);
-            term3 = AmbiNav_CoefficientA(n-1,m);
+            term1 = AmbiNav_CoefficientA(li,mm) * Tz(getACN(lo,mm)+1,getACN(li+1,mm)+1,nzkd);
+            term2 = AmbiNav_CoefficientA(li-1,mm) * Tz(getACN(lo,mm)+1,getACN(li-1,mm)+1,nzkd);
+            term3 = AmbiNav_CoefficientA(lo-1,mm);
             if term3 ~= 0
-                term3 = term3*Tz(getACN(n-1,m)+1,getACN(l,m)+1,nzkd);
+                term3 = term3 * Tz(getACN(lo-1,mm)+1,getACN(li,mm)+1,nzkd);
             end
-            Tz(getACN(n+1,m)+1,getACN(l,m)+1,nzkd) = -(term1-term2-term3)/AmbiNav_CoefficientA(n,m);
+            Tz(getACN(lo+1,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2 + term3) / AmbiNav_CoefficientA(lo,mm);
         end
     end
 end
 
 % Step 4
-for n = 1:maxOrder
-    for l = n:maxOrder
-        for m = -1:-1:-n
+for lo = 1:L
+    for li = lo:L
+        for mm = -1:-1:-lo
             % Eq. 161 [2]; Eq. 3.2.92 [1]
-            Tz(getACN(n,m)+1,getACN(l,m)+1,nzkd) = Tz(getACN(n,-m)+1,getACN(l,-m)+1,nzkd);
+            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = Tz(getACN(lo,-mm)+1,getACN(li,-mm)+1,nzkd);
         end
     end
 end
 
 % Step 5
-for n = 0:maxOrder
-    for l = (n+1):maxOrder
-        for m = -n:n
+for lo = 0:L
+    for li = (lo+1):L
+        for mm = -lo:lo
             % Eq. 162 [2]; Eq. 3.2.96 [1]
-            coeff = (-1)^(n+l);
-            Tz(getACN(l,m)+1,getACN(n,m)+1,nzkd) = coeff*Tz(getACN(n,m)+1,getACN(l,m)+1,nzkd);
+            coeff = (-1)^(lo+li);
+            Tz(getACN(li,mm)+1,getACN(lo,mm)+1,nzkd) = coeff*Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd);
         end
     end
 end
 
 % Make square matrix
-Tz = Tz(:,1:HOATerms,:);
+Tz = Tz(:,1:N,:);
 
-% Real-valued signal (N3D) correction
-[nList, ~] = getAmbOrder(0:HOATerms-1);
-for ii = 1:HOATerms
-    for jj = 1:HOATerms
-        if any(Tz(ii,jj,nzkd))
-            coeff = (-1i)^(nList(jj)-nList(ii));
-            Tz(ii,jj,nzkd) = coeff*Tz(ii,jj,nzkd);
+% Basis function correction (since we factor out (-i)^l)
+[Lvec, ~] = getAmbOrder(0:N-1);
+for no = 1:N
+    lo = Lvec(no);
+    for ni = 1:N
+        li = Lvec(ni);
+        if any(Tz(no,ni,nzkd))
+            coeff = (-1i)^(li-lo);
+            Tz(no,ni,nzkd) = coeff * Tz(no,ni,nzkd);
         end
     end
 end
