@@ -77,18 +77,18 @@ for lo = 1:L
     end
 end
 
-% Step 3 -- note: change lo --> (lo-1); (lo+1) --> lo; (lo-1) --> (lo-2)
+% Step 3
 for mm = 0:(L-1)
-    for lo = mm:(L-1) % change to (mm+1):L
-        for li = (lo+1):(2*L - (lo+1))
+    for lo = (mm+1):L
+        for li = lo:(2*L - lo)
             % Eq. 163 [2]; Eq. 3.2.90 [1]
-            term1 = AmbiNav_CoefficientA(li,mm) * Tz(getACN(lo,mm)+1,getACN(li+1,mm)+1,nzkd);
-            term2 = AmbiNav_CoefficientA(li-1,mm) * Tz(getACN(lo,mm)+1,getACN(li-1,mm)+1,nzkd);
-            term3 = AmbiNav_CoefficientA(lo-1,mm);
+            term1 = AmbiNav_CoefficientA(li,mm) * Tz(getACN(lo-1,mm)+1,getACN(li+1,mm)+1,nzkd);
+            term2 = AmbiNav_CoefficientA(li-1,mm) * Tz(getACN(lo-1,mm)+1,getACN(li-1,mm)+1,nzkd);
+            term3 = AmbiNav_CoefficientA(lo-2,mm);
             if term3 ~= 0
-                term3 = term3 * Tz(getACN(lo-1,mm)+1,getACN(li,mm)+1,nzkd);
+                term3 = term3 * Tz(getACN(lo-2,mm)+1,getACN(li,mm)+1,nzkd);
             end
-            Tz(getACN(lo+1,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2 + term3) / AmbiNav_CoefficientA(lo,mm);
+            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2 + term3) / AmbiNav_CoefficientA(lo-1,mm);
         end
     end
 end
