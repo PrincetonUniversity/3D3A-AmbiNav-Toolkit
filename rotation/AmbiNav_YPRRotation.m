@@ -43,10 +43,10 @@ function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qa = AmbiNav_Yaw(alpha, maxOrder);
-Qb = AmbiNav_Pitch(beta, maxOrder);
-Qc = AmbiNav_Roll(gamma, maxOrder);
+Qy = AmbiNav_Yaw(alpha, maxOrder);
+Qp = AmbiNav_Pitch(beta, maxOrder);
+Qr = AmbiNav_Roll(gamma, maxOrder);
 
-Q = Qa * Qb * Qc;
+Q = Qy * Qp * Qr;
 
 end

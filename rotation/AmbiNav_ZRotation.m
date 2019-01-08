@@ -43,9 +43,9 @@ function Qz = AmbiNav_ZRotation(AZIM, ELEV, L)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qa = AmbiNav_Yaw(AZIM, L);
-Qb = AmbiNav_Pitch(ELEV - (pi/2),L);
+Qy = AmbiNav_Yaw(AZIM, L);
+Qp = AmbiNav_Pitch(ELEV - (pi/2),L);
 
-Qz = Qa * Qb;
+Qz = Qy * Qp;
 
 end

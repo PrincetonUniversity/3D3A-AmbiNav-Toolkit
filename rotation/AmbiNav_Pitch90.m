@@ -1,4 +1,4 @@
-function Qb = AmbiNav_Pitch90(maxOrder)
+function Qp = AmbiNav_Pitch90(maxOrder)
 %AMBINAV_PITCH90 Ambisonics rotation of 90 degrees pitch.
 %   Q = AMBINAV_PITCH90(L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of 90 degrees pitch.
@@ -103,6 +103,6 @@ for ii = 1:HOATerms
     end
 end
 
-Qb = kTable.*Q(1:HOATerms,1:HOATerms);
+Qp = kTable.*Q(1:HOATerms,1:HOATerms);
 
 end

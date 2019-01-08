@@ -1,4 +1,4 @@
-function Qb = AmbiNav_Pitch(beta, maxOrder)
+function Qp = AmbiNav_Pitch(beta, maxOrder)
 %AMBINAV_PITCH Ambisonics rotation in pitch.
 %   Q = AMBINAV_PITCH(B,L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of B radians pitch.
@@ -41,7 +41,7 @@ function Qb = AmbiNav_Pitch(beta, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qc = AmbiNav_Roll90(maxOrder);
-Qb = (Qc.') * AmbiNav_Yaw(beta, maxOrder) * Qc;
+Qr = AmbiNav_Roll90(maxOrder);
+Qp = (Qr.') * AmbiNav_Yaw(beta, maxOrder) * Qr;
 
 end

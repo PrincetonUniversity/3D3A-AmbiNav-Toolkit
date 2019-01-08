@@ -1,4 +1,4 @@
-function Qc = AmbiNav_Roll90(maxOrder)
+function Qr = AmbiNav_Roll90(maxOrder)
 %AMBINAV_ROLL90 Ambisonics rotation of 90 degrees roll.
 %   Q = AMBINAV_ROLL90(L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of 90 degrees roll.
@@ -41,7 +41,7 @@ function Qc = AmbiNav_Roll90(maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qb = AmbiNav_Pitch90(maxOrder);
-Qc = Qb * AmbiNav_Yaw90(maxOrder) * (Qb.');
+Qp = AmbiNav_Pitch90(maxOrder);
+Qr = Qp * AmbiNav_Yaw90(maxOrder) * (Qp.');
 
 end

@@ -1,4 +1,4 @@
-function Qa = AmbiNav_Yaw90(maxOrder)
+function Qy = AmbiNav_Yaw90(L)
 %AMBINAV_YAW90 Ambisonics rotation of 90 degrees yaw.
 %   Q = AMBINAV_YAW90(L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of 90 degrees yaw.
@@ -41,20 +41,24 @@ function Qa = AmbiNav_Yaw90(maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-HOATerms = (maxOrder + 1)^2;
-[nList, mList] = getAmbOrder(0:HOATerms-1);
+N = (L + 1)^2;
+[Lvec, Mvec] = getAmbOrder(0:N-1);
 
-Qa = zeros(HOATerms);
-for ii = 1:HOATerms
-    for jj = 1:HOATerms
-        if (nList(ii) == nList(jj)) && (abs(mList(ii)) == abs(mList(jj)))
-            if mList(ii)*mList(jj) >= 0
-                if ~mod(mList(jj),2)
-                    Qa(ii,jj) = (-1)^(mList(jj)/2);
+Qy = zeros(N);
+for no = 1:N
+    lo = Lvec(no);
+    mo = Mvec(no);
+    for ni = 1:N
+        li = Lvec(ni);
+        mi = Mvec(ni);
+        if (lo == li) && (abs(mo) == abs(mi))
+            if mo*mi >= 0
+                if ~mod(mi,2)
+                    Qy(no,ni) = (-1)^(mi/2);
                 end
             else
-                if mod(mList(jj),2)
-                    Qa(ii,jj) = (-1)^((mList(jj)-1)/2);
+                if mod(mi,2)
+                    Qy(no,ni) = (-1)^((mi-1)/2);
                 end
             end
         end
