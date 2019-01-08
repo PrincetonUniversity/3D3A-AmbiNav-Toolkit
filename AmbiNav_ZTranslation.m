@@ -96,9 +96,9 @@ end
 % Step 4
 for lo = 1:L
     for li = lo:L
-        for mm = -1:-1:-lo
+        for mm = 1:lo
             % Eq. 161 [2]; Eq. 3.2.92 [1]
-            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = Tz(getACN(lo,-mm)+1,getACN(li,-mm)+1,nzkd);
+            Tz(getACN(lo,-mm)+1,getACN(li,-mm)+1,nzkd) = Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd);
         end
     end
 end
