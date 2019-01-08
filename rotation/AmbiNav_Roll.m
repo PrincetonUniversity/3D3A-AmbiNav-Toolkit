@@ -1,4 +1,4 @@
-function Qr = AmbiNav_Roll(gamma, maxOrder)
+function Qr = AmbiNav_Roll(gamma, L)
 %AMBINAV_ROLL Ambisonics rotation in roll.
 %   Q = AMBINAV_ROLL(G,L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of G radians roll. 
@@ -41,7 +41,7 @@ function Qr = AmbiNav_Roll(gamma, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qp = AmbiNav_Pitch90(maxOrder);
-Qr = Qp * AmbiNav_Yaw(gamma, maxOrder) * (Qp.');
+Qp = AmbiNav_Pitch90(L);
+Qr = Qp * AmbiNav_Yaw(gamma,L) * (Qp.');
 
 end

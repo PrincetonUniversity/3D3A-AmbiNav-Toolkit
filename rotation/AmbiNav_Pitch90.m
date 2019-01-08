@@ -1,4 +1,4 @@
-function Qp = AmbiNav_Pitch90(maxOrder)
+function Qp = AmbiNav_Pitch90(L)
 %AMBINAV_PITCH90 Ambisonics rotation of 90 degrees pitch.
 %   Q = AMBINAV_PITCH90(L) computes the ambisonic rotation coefficients
 %   matrix Q, up to ambisonics order L, for a rotation of 90 degrees pitch.
@@ -41,68 +41,78 @@ function Qp = AmbiNav_Pitch90(maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-HOATerms = (maxOrder + 1)^2;
-[nList, mList] = getAmbOrder(0:HOATerms-1);
+N = (L + 1)^2;
+[Lvec, Mvec] = getAmbOrder(0:N-1);
 
-Q = zeros((2*maxOrder + 1)^2);
+Q = zeros((2*L + 1)^2);
 
 % Step 1
-for n = 0:(2*maxOrder)
-    Pn = legendre(n,0);
-    for s = -n:n
-        % Eq. 189 [2], m = 0
-        Q(getACN(n,0)+1,getACN(n,s)+1) = ((-1)^s) * sqrt(2-(~s)) ...
-            * sqrt(factorial(n-abs(s))/factorial(n+abs(s))) * Pn(abs(s)+1);
+for ll = 0:(2*L)
+    Pl = legendre(ll,0);
+    for mi = 0:ll
+        % Eq. 189 [2], mo = 0
+        Q(getACN(ll,0)+1,getACN(ll,mi)+1) = ((-1)^abs(mi)) * sqrt(2-(~abs(mi))) ...
+            * sqrt(factorial(ll-abs(mi))/factorial(ll+abs(mi))) * Pl(abs(mi)+1);
     end
 end
 
 % Step 2
-for m = 1:maxOrder
-    for n = m:(2*maxOrder - m)
-        coeff = sqrt(2-(~m))/(2*AmbiNav_CoefficientB(n+1,m-1)*sqrt(2-(~(m-1))));
-        for s = m:n
+for mo = 1:L
+    for ll = mo:(2*L - mo)
+        coeff = sqrt(2-(~mo)) / (2*AmbiNav_CoefficientB(ll+1,mo-1)*sqrt(2-(~(mo-1))));
+        for mi = mo:ll
             % Eq. 190 [2]
-            temp = (AmbiNav_CoefficientB(n+1,s-1)/sqrt(2-(~(s-1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s-1)+1) ...
-                - (AmbiNav_CoefficientB(n+1,-s-1)/sqrt(2-(~(s+1))))*Q(getACN(n+1,m-1)+1,getACN(n+1,s+1)+1);
-            Q(getACN(n,m)+1,getACN(n,s)+1) = coeff*(sqrt(2-(~s))*temp ...
-                + 2*AmbiNav_CoefficientA(n,s)*Q(getACN(n+1,m-1)+1,getACN(n+1,s)+1));
+            temp1 = (AmbiNav_CoefficientB(ll+1,mi-1)/sqrt(2-(~(mi-1)))) * Q(getACN(ll+1,mo-1)+1,getACN(ll+1,mi-1)+1);
+            temp2 = (AmbiNav_CoefficientB(ll+1,-mi-1)/sqrt(2-(~(mi+1)))) * Q(getACN(ll+1,mo-1)+1,getACN(ll+1,mi+1)+1);
+            temp = sqrt(2-(~mi))*(temp1 - temp2);
+            Q(getACN(ll,mo)+1,getACN(ll,mi)+1) = coeff*(temp ...
+                + 2*AmbiNav_CoefficientA(ll,mi)*Q(getACN(ll+1,mo-1)+1,getACN(ll+1,mi)+1));
         end
     end
 end
 
 % Step 3
-for n = 1:maxOrder
-    for m = 1:n
-        for s = 0:(m-1)
+for ll = 1:L
+    for mo = 1:ll
+        for mi = 0:(mo-1)
             % Eq. 191 [2]
-            Q(getACN(n,m)+1,getACN(n,s)+1) = ((-1)^(m+s))*Q(getACN(n,s)+1,getACN(n,m)+1);
+            Q(getACN(ll,mo)+1,getACN(ll,mi)+1) = ((-1)^(mo+mi))*Q(getACN(ll,mi)+1,getACN(ll,mo)+1);
         end
     end
 end
 
 % Step 4
-for n = 1:maxOrder
-    for m = 1:n
-        for s = 1:n
-            Q(getACN(n,-m)+1,getACN(n,-s)+1) = Q(getACN(n,m)+1,getACN(n,s)+1);
+for ll = 1:L
+    for mo = 1:ll
+        for mi = 1:ll
+            % Eqs. 176 and 191 [2]
+            Q(getACN(ll,-mo)+1,getACN(ll,-mi)+1) = Q(getACN(ll,mo)+1,getACN(ll,mi)+1);
         end
     end
 end
 
 % Step 5
-kTable = zeros(HOATerms);
-for ii = 1:HOATerms
-    for jj = 1:HOATerms
-        if nList(ii) == nList(jj)
-            if (mList(ii) >= 0) && (mList(jj) >= 0)
-                kTable(ii,jj) = ~mod(nList(ii) + mList(ii) + mList(jj), 2);
-            elseif (mList(ii) < 0) && (mList(jj) < 0)
-                kTable(ii,jj) = ~mod(nList(ii) + mList(ii) + mList(jj) + 1, 2);
+Qmask = false(N);
+for no = 1:N
+    lo = Lvec(no);
+    mo = Mvec(no);
+    for ni = 1:N
+        li = Lvec(ni);
+        mi = Mvec(ni);
+        if lo == li
+            % Eq. 187 [2]
+            if (mo >= 0) && (mi >= 0)
+                Qmask(no,ni) = ~mod(lo + mo + mi, 2);
+            elseif (mo < 0) && (mi < 0)
+                Qmask(no,ni) = ~mod(lo + mo + mi + 1, 2);
             end
         end
     end
 end
 
-Qp = kTable.*Q(1:HOATerms,1:HOATerms);
+Qp = Qmask .* Q(1:N,1:N);
+
+% TESTED 8 JAN 2019 - PASSED %
+% matches Kronlachner's ambix Rotator plug-in up to L = 3 %
 
 end

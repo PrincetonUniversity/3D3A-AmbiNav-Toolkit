@@ -1,4 +1,4 @@
-function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
+function Q = AmbiNav_YPRRotation(alpha, beta, gamma, L)
 %AMBINAV_YPRROTATION Yaw-pitch-roll rotation of ambisonics.
 %   Q = AMBINAV_YPRROTATION(A,B,G,L) computes the ambisonic rotation
 %   coefficients matrix Q, up to ambisonics order L, for a rotation of A 
@@ -43,9 +43,9 @@ function Q = AmbiNav_YPRRotation(alpha, beta, gamma, maxOrder)
 %     [2] Zotter (2009) Analysis and Synthesis of Sound-Radiation with
 %         Spherical Arrays.
 
-Qy = AmbiNav_Yaw(alpha, maxOrder);
-Qp = AmbiNav_Pitch(beta, maxOrder);
-Qr = AmbiNav_Roll(gamma, maxOrder);
+Qy = AmbiNav_Yaw(alpha,L);
+Qp = AmbiNav_Pitch(beta,L);
+Qr = AmbiNav_Roll(gamma,L);
 
 Q = Qy * Qp * Qr;
 
