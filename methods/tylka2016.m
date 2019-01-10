@@ -63,14 +63,19 @@ if numel(u) ~= numMics
     error('Microphone signals and positions should have the same number of elements.');
 end
 
-Li = sqrt(size(Ai{1},2)) - 1;
 kLen = length(kVec);
 
+Li = sqrt(size(Ai{1},2)) - 1;
+No = (Lo + 1)^2;
+
 Acat = cell2mat(Ai(:).');
-Ao = zeros(kLen,(Lo + 1)^2);
+Ao = zeros(kLen,No);
 F = AmbiNav_InterpolationFilters(Li,Lo,u,r,kVec,beta);
-for kk = 1:length(kVec)
+for kk = 1:length(kVec) % 8.5 mins
     Ao(kk,:) = Acat(kk,:) * F(:,:,kk).';
 end
+% for nn = 1:No % 8.8 mins
+%     Ao(:,nn) = sum(Acat .* squeeze(F(nn,:,:)).',2);
+% end
 
 end
