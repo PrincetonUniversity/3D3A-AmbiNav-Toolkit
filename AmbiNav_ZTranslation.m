@@ -61,55 +61,55 @@ for iii = 1:sum(zkd)
 end
 
 % Step 1
-for li = 0:2*L
+for lp = 0:2*L
     % Eq. 166 [2]; Eq. 3.2.103 [1]
-    Tz(getACN(0,0)+1,getACN(li,0)+1,nzkd) = ((-1)^li)*sqrt(2*li+1)*sphericalBesselJ(li,kd(nzkd));
+    Tz(getACN(0,0)+1,getACN(lp,0)+1,nzkd) = ((-1)^lp)*sqrt(2*lp+1)*sphericalBesselJ(lp,kd(nzkd));
 end
 
 % Step 2
-for lo = 1:L
-    mm = lo;
-    for li = lo:(2*L-lo)
+for ll = 1:L
+    mm = ll;
+    for lp = ll:(2*L-ll)
         % Eq. 163 [2]; Eq. 3.2.104 [1]
-        term1 = AmbiNav_CoefficientB(li+1,mm-1) * Tz(getACN(lo-1,mm-1)+1,getACN(li+1,mm-1)+1,nzkd);
-        term2 = AmbiNav_CoefficientB(li,-mm) * Tz(getACN(lo-1,mm-1)+1,getACN(li-1,mm-1)+1,nzkd);
-        Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2) / AmbiNav_CoefficientB(lo,-mm);
+        term1 = AmbiNav_CoefficientB(lp+1,mm-1) * Tz(getACN(ll-1,mm-1)+1,getACN(lp+1,mm-1)+1,nzkd);
+        term2 = AmbiNav_CoefficientB(lp,-mm) * Tz(getACN(ll-1,mm-1)+1,getACN(lp-1,mm-1)+1,nzkd);
+        Tz(getACN(ll,mm)+1,getACN(lp,mm)+1,nzkd) = (-term1 + term2) / AmbiNav_CoefficientB(ll,-mm);
     end
 end
 
 % Step 3
 for mm = 0:(L-1)
-    for lo = (mm+1):L
-        for li = lo:(2*L - lo)
+    for ll = (mm+1):L
+        for lp = ll:(2*L - ll)
             % Eq. 163 [2]; Eq. 3.2.90 [1]
-            term1 = AmbiNav_CoefficientA(li,mm) * Tz(getACN(lo-1,mm)+1,getACN(li+1,mm)+1,nzkd);
-            term2 = AmbiNav_CoefficientA(li-1,mm) * Tz(getACN(lo-1,mm)+1,getACN(li-1,mm)+1,nzkd);
-            term3 = AmbiNav_CoefficientA(lo-2,mm);
+            term1 = AmbiNav_CoefficientA(lp,mm) * Tz(getACN(ll-1,mm)+1,getACN(lp+1,mm)+1,nzkd);
+            term2 = AmbiNav_CoefficientA(lp-1,mm) * Tz(getACN(ll-1,mm)+1,getACN(lp-1,mm)+1,nzkd);
+            term3 = AmbiNav_CoefficientA(ll-2,mm);
             if term3 ~= 0
-                term3 = term3 * Tz(getACN(lo-2,mm)+1,getACN(li,mm)+1,nzkd);
+                term3 = term3 * Tz(getACN(ll-2,mm)+1,getACN(lp,mm)+1,nzkd);
             end
-            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = (-term1 + term2 + term3) / AmbiNav_CoefficientA(lo-1,mm);
+            Tz(getACN(ll,mm)+1,getACN(lp,mm)+1,nzkd) = (-term1 + term2 + term3) / AmbiNav_CoefficientA(ll-1,mm);
         end
     end
 end
 
 % Step 4
-for lo = 1:L
-    for li = lo:L
-        for mm = 1:lo
+for ll = 1:L
+    for lp = ll:L
+        for mm = 1:ll
             % Eq. 161 [2]; Eq. 3.2.92 [1]
-            Tz(getACN(lo,-mm)+1,getACN(li,-mm)+1,nzkd) = Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd);
+            Tz(getACN(ll,-mm)+1,getACN(lp,-mm)+1,nzkd) = Tz(getACN(ll,mm)+1,getACN(lp,mm)+1,nzkd);
         end
     end
 end
 
 % Step 5
-for li = 0:(L-1)
-    for lo = (li+1):L
-        for mm = -li:li
+for lp = 0:(L-1)
+    for ll = (lp+1):L
+        for mm = -lp:lp
             % Eq. 162 [2]; Eq. 3.2.96 [1]
-            coeff = (-1)^(lo+li);
-            Tz(getACN(lo,mm)+1,getACN(li,mm)+1,nzkd) = coeff * Tz(getACN(li,mm)+1,getACN(lo,mm)+1,nzkd);
+            coeff = (-1)^(ll+lp);
+            Tz(getACN(ll,mm)+1,getACN(lp,mm)+1,nzkd) = coeff * Tz(getACN(lp,mm)+1,getACN(ll,mm)+1,nzkd);
         end
     end
 end
@@ -119,13 +119,13 @@ Tz = Tz(:,1:N,:);
 
 % Basis function correction (since we factor out (-i)^l)
 [Lvec, ~] = getAmbOrder(0:N-1);
-for no = 1:N
-    lo = Lvec(no);
-    for ni = 1:N
-        li = Lvec(ni);
-        if any(Tz(no,ni,nzkd))
-            coeff = (-1i)^(lo-li);
-            Tz(no,ni,nzkd) = coeff * Tz(no,ni,nzkd);
+for nn = 1:N
+    ll = Lvec(nn);
+    for np = 1:N
+        lp = Lvec(np);
+        if any(Tz(nn,np,nzkd))
+            coeff = (-1i)^(ll-lp);
+            Tz(nn,np,nzkd) = coeff * Tz(nn,np,nzkd);
         end
     end
 end
