@@ -130,9 +130,4 @@ for nn = 1:N
     end
 end
 
-% Transpose to translate ambisonics signals (rather than basis functions)
-for kk = 1:kdLen
-    Tz(:,:,kk) = Tz(:,:,kk).';
-end
-
 end

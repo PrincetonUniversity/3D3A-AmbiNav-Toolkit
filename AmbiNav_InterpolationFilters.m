@@ -71,11 +71,11 @@ T_cell = cell(numMics,1);
 for ll = 1:numMics
     indx{ll} = 1+(ll-1)*Ni:ll*Ni;
     
-    % Each cell contains a matrix of size Ni-by-Nmax-by-K
+    % Each cell contains a matrix of size Nmax-by-Ni-by-K
     if weights(ll) ~= 0
         T_cell{ll} = AmbiNav_Translation(Lmax, Li, u{ll} - r, kVec);
     else
-        T_cell{ll} = zeros(Ni, Nmax, kLen);
+        T_cell{ll} = zeros(Nmax, Ni, kLen);
     end
 end
 
@@ -89,14 +89,14 @@ for kk = 1:kLen
         end
     else
         for ll = 1:numMics
-            M(indx{ll},:) = sqrt(weights(ll))*T_cell{ll}(:,:,kk);
+            M(indx{ll},:) = sqrt(weights(ll))*(T_cell{ll}(:,:,kk).');
             W(indx{ll},indx{ll}) = sqrt(weights(ll))*eye(Ni);
         end
         
         while any(any(isnan(pinv(M))))
             weights = ditherWeights(weights);
             for ll = 1:numMics
-                M(indx{ll},:) = sqrt(weights(ll))*T_cell{ll}(:,:,kk);
+                M(indx{ll},:) = sqrt(weights(ll))*(T_cell{ll}(:,:,kk).');
             end
         end
         

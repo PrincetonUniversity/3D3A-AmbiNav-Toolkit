@@ -5,11 +5,11 @@ function T = AmbiNav_Translation(Li, Lo, d, kVec)
 %   translation position vector D (given in Cartesian coordinates), and for
 %   angular wavenumber K.
 %
-%   K may be a vector, in which case T is (LO+1)^2-by-(LI+1)^2-by-LENGTH(K).
+%   K may be a vector, in which case T is (LI+1)^2-by-(LO+1)^2-by-LENGTH(K).
 %
 %   The ACN/N3D ambisonics normalization convention is assumed.
 %
-%   See also GUMEROV2005.
+%   See also GUMEROV2005, AMBINAV_INTERPOLATIONFILTERS.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -64,17 +64,17 @@ if all(kVec*R < AmbiNav_KDThreshold())
     Qi = eye(Ni);
     Qo = eye(No);
 else
-    Qi = AmbiNav_ZRotation(AZIM, ELEV, Li).';
-    Qo = AmbiNav_ZRotation(AZIM, ELEV, Lo);
+    Qi = AmbiNav_ZRotation(AZIM, ELEV, Li);
+    Qo = AmbiNav_ZRotation(AZIM, ELEV, Lo).';
 end
 
-T = zeros(No,Ni,kLen);
+T = zeros(Ni,No,kLen);
 Tz = AmbiNav_ZTranslation(kVec*R, max([Li, Lo]));
 for kk = 1:kLen
     if kVec(kk)*R < AmbiNav_KDThreshold()
-        T(:,:,kk) = eye(No,Ni);
+        T(:,:,kk) = eye(Ni,No);
     else
-        T(:,:,kk) = Qo * Tz(1:No,1:Ni,kk) * Qi;
+        T(:,:,kk) = Qi * Tz(1:Ni,1:No,kk) * Qo;
     end
 end
 

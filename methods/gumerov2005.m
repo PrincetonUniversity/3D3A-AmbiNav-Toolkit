@@ -63,10 +63,10 @@ T = AmbiNav_Translation(sqrt(Ni)-1, Lo, d, kVec);
 
 Ao = zeros(kLen,No);
 % for kk = 1:kLen
-%     Ao(kk,:) = Ai(kk,:) * T(:,:,kk).';
+%     Ao(kk,:) = Ai(kk,:) * T(:,:,kk);
 % end
 for nn = 1:No
-    Ao(:,nn) = sum(Ai .* squeeze(T(nn,:,:)).',2);
+    Ao(:,nn) = sum(Ai .* squeeze(T(:,nn,:)).',2);
 end
 
 end
