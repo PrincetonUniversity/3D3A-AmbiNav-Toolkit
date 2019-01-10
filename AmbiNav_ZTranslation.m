@@ -124,10 +124,15 @@ for no = 1:N
     for ni = 1:N
         li = Lvec(ni);
         if any(Tz(no,ni,nzkd))
-            coeff = (-1i)^(li-lo);
+            coeff = (-1i)^(lo-li);
             Tz(no,ni,nzkd) = coeff * Tz(no,ni,nzkd);
         end
     end
+end
+
+% Transpose to translate ambisonics signals (rather than basis functions)
+for kk = 1:kdLen
+    Tz(:,:,kk) = Tz(:,:,kk).';
 end
 
 end
