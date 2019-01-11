@@ -48,6 +48,8 @@ function Ao = tylka2019(Ai, u, Lo, r, kVec)
 %     [1] Tylka and Choueiri (2019) A Parametric Method for Virtual
 %         Navigation Within an Array of Ambisonics Microphones (Under
 %         Review).
+%     [2] Tylka and Choueiri (2016) Soundfield Navigation using an Array of
+%         Higher-Order Ambisonics Microphones.
 
 Li = sqrt(size(Ai{1},2)) - 1;
 xoFreqk = xoFreqModel(u, r, Li);
@@ -79,14 +81,14 @@ for ii = 1:numel(u)
 end
 switch numel(u)
     case 1
-        xoFreqk = Li / min(navDist);
+        xoFreqk = Li / min(navDist); % kd = L
 %         xoFreqk = 1 / min(navDist);
     case 2
-        xoFreqk = Li / AmbiNav_ArraySpacing(u);
+        xoFreqk = 2 * Li / AmbiNav_ArraySpacing(u); % see Fig. 5 [2]
 %         xoFreqk = 1 / ((min(navDist)*max(navDist)) / AmbiNav_ArraySpacing(u));
     otherwise
         warning('Hybrid crossover frequency is not well-established for P > 2 microphones.');
-        xoFreqk = Li / AmbiNav_ArraySpacing(u);
+        xoFreqk = numel(u) * Li / AmbiNav_ArraySpacing(u);
 %         xoFreqk = 1 / max(navDist);
 end %% TODO: generalizing to P > 2 needs to be investigated more
 end
