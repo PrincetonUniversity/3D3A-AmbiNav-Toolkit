@@ -81,14 +81,15 @@ for ii = 1:numel(u)
 end
 switch numel(u)
     case 1
-        xoFreqk = Li / min(navDist); % kd = L
-%         xoFreqk = 1 / min(navDist);
+        xoFreqk = 1 / min(navDist);
+        % theoretically, should be kd = L, but found that then coloration
+        % increases with L
     case 2
         xoFreqk = 2 * Li / AmbiNav_ArraySpacing(u); % see Fig. 5 [2]
-%         xoFreqk = 1 / ((min(navDist)*max(navDist)) / AmbiNav_ArraySpacing(u));
     otherwise
         warning('Hybrid crossover frequency is not well-established for P > 2 microphones.');
         xoFreqk = numel(u) * Li / AmbiNav_ArraySpacing(u);
+%         xoFreqk = Li / mean(navDist);
 %         xoFreqk = 1 / max(navDist);
 end %% TODO: generalizing to P > 2 needs to be investigated more
 end
