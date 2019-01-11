@@ -45,11 +45,12 @@ function Ao = tylka2019(Ai, u, Lo, r, kVec)
 %   ==============================================================================
 
 %   References:
-%     [1] Tylka and Choueiri (2018) A Parametric Method for Virtual
+%     [1] Tylka and Choueiri (2019) A Parametric Method for Virtual
 %         Navigation Within an Array of Ambisonics Microphones (Under
 %         Review).
 
-xoFreqk = xoFreqModel(u, r);
+Li = sqrt(size(Ai{1},2)) - 1;
+xoFreqk = xoFreqModel(u, r, Li);
 xoIndx = find(kVec >= xoFreqk,1,'first') - 1;
 
 % Split frequency ranges
@@ -71,18 +72,21 @@ Ao = cat(1,AoL,AoH);
 
 end
 
-function xoFreqk = xoFreqModel(u, r)
+function xoFreqk = xoFreqModel(u, r, Li)
 navDist = zeros(size(u));
 for ii = 1:numel(u)
     navDist(ii) = norm(u{ii}-r);
 end
 switch numel(u)
     case 1
-        xoFreqk = 1 / min(navDist);
+        xoFreqk = Li / min(navDist);
+%         xoFreqk = 1 / min(navDist);
     case 2
-        xoFreqk = 1 / ((min(navDist)*max(navDist)) / AmbiNav_ArraySpacing(u));
+        xoFreqk = Li / AmbiNav_ArraySpacing(u);
+%         xoFreqk = 1 / ((min(navDist)*max(navDist)) / AmbiNav_ArraySpacing(u));
     otherwise
         warning('Hybrid crossover frequency is not well-established for P > 2 microphones.');
-        xoFreqk = 1 / max(navDist);
+        xoFreqk = Li / AmbiNav_ArraySpacing(u);
+%         xoFreqk = 1 / max(navDist);
 end %% TODO: generalizing to P > 2 needs to be investigated more
 end
