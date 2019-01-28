@@ -85,7 +85,8 @@ switch numel(u)
         % theoretically, should be kd = L, but found that then coloration
         % increases with L
     case 2
-        xoFreqk = 2 * Li / AmbiNav_ArraySpacing(u); % see Fig. 5 [2]
+%         xoFreqk = 2 * Li / AmbiNav_ArraySpacing(u); % see Fig. 5 [2]
+        xoFreqk = AmbiNav_ArraySpacing(u) / (min(navDist) * max(navDist));
     otherwise
         warning('Hybrid crossover frequency is not well-established for P > 2 microphones.');
         xoFreqk = numel(u) * Li / AmbiNav_ArraySpacing(u);
