@@ -44,6 +44,9 @@ function F = AmbiNav_InterpolationFilters(Li, Lo, u, r, kVec, beta)
 %   References:
 %     [1] Tylka and Choueiri (2016) Soundfield Navigation using an Array of
 %         Higher-Order Ambisonics Microphones.
+%     [2] Tylka and Choueiri (2019) A Parametric Method for Virtual
+%         Navigation Within an Array of Ambisonics Microphones (Under
+%         Review).
 
 narginchk(5,6);
 
@@ -130,14 +133,14 @@ for ll = 1:numMics
     navDist(ll) = norm(r - u{ll});
 end
 
+% Same as hybrid XO frequency in Tylka and Choueiri (2019)
 switch numMics
     case 1
-        k0 = 1 / navDist;
+        k0 = 1 / min(navDist);
     case 2
-        k0 = norm(u{1} - u{2}) / (min(navDist) * max(navDist));
+        k0 = AmbiNav_ArraySpacing(u) / (min(navDist) * max(navDist));
     otherwise
-        delta = AmbiNav_ArraySpacing(u);
-        k0 = 1 / delta;
+        k0 = 1 / max(navDist);
 end
 
 Gpi = db2mag(30);
