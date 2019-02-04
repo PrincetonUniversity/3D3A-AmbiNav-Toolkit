@@ -59,7 +59,7 @@ weights(weights < max(weights)/1e10) = 0;
 
 % Default regularization function
 if nargin < 6 || isempty(beta)
-    beta = regFunction(kVec,u(weights~=0),r);
+    beta = tylka2016_regularization(kVec,u(weights~=0),r,Li,'tylka2016');
 end
 
 numMics = numel(u);
@@ -120,30 +120,5 @@ function w = ditherWeights(w)
 d = 0.01*min(min(w),1-max(w));
 w(w==max(w)) = w(w==max(w)) + d;
 w(w==min(w)) = w(w==min(w)) - d;
-
-end
-
-function beta = regFunction(k, u, r)
-
-beta = zeros(length(k),1);
-
-numMics = numel(u);
-navDist = zeros(numMics,1);
-for ll = 1:numMics
-    navDist(ll) = norm(r - u{ll});
-end
-
-% Same as hybrid XO frequency in Tylka and Choueiri (2019)
-switch numMics
-    case 1
-        k0 = 1 / min(navDist);
-    case 2
-        k0 = AmbiNav_ArraySpacing(u) / (min(navDist) * max(navDist));
-    otherwise
-        k0 = 1 / max(navDist);
-end
-
-Gpi = db2mag(30);
-beta(k~=0) = abs((Gpi * 1i * (k(k~=0) / k0) + 1) ./ (1i * (k(k~=0) / k0) + Gpi));
 
 end
