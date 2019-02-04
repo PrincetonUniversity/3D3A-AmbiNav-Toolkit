@@ -10,9 +10,14 @@ function Ao = tylka2016(Ai, u, Lo, r, kVec, beta)
 %   K may be a vector, in which case SIZE(B{1},1) must be LENGTH(K) and A
 %   will be LENGTH(K)-by-(LO+1)^2.
 %
+%   A = TYLKA2016(B,U,L,R,K,BETA) optionally specifies a particular
+%   regularization function BETA to use. BETA should have LENGTH(K)
+%   elements. If omitted or empty, a default high-pass-like regularization
+%   function is used.
+%
 %   The ACN/N3D ambisonics normalization convention is assumed.
 %
-%   See also AMBINAV_INTERPOLATIONFILTERS.
+%   See also AMBINAV_INTERPOLATIONFILTERS, TYLKA2016_REGULARIZATION.
 
 %   ==============================================================================
 %   This file is part of the 3D3A AmbiNav Toolkit.
@@ -50,10 +55,6 @@ function Ao = tylka2016(Ai, u, Lo, r, kVec, beta)
 
 narginchk(5,6);
 
-if nargin < 6
-    beta = []; % Use default regularization function
-end
-
 if numel(r) ~= 3
     error('Translation vector D should have three elements.');
 end
@@ -67,6 +68,13 @@ kLen = length(kVec);
 
 Li = sqrt(size(Ai{1},2)) - 1;
 No = (Lo + 1)^2;
+
+if nargin < 6 || isempty(beta)
+    % Use default regularization function
+    weights = AmbiNav_InterpolationWeights(u,r);
+    weights(weights < max(weights)/1e10) = 0;
+    beta = tylka2016_regularization(kVec,u(weights~=0),r,Li,'tylka2016');
+end
 
 Acat = cell2mat(Ai(:).');
 Ao = zeros(kLen,No);

@@ -55,6 +55,10 @@ Li = sqrt(size(Ai{1},2)) - 1;
 xoFreqk = xoFreqModel(u, r, Li);
 xoIndx = find(kVec >= xoFreqk,1,'first') - 1;
 
+weights = AmbiNav_InterpolationWeights(u,r);
+weights(weights < max(weights)/1e10) = 0;
+beta = tylka2016_regularization(kVec, u(weights~=0), r, Li, 'tylka2019');
+
 % Split frequency ranges
 AiL = cell(size(Ai));
 AiH = cell(size(Ai));
@@ -64,7 +68,7 @@ for ii = 1:numel(Ai)
 end
 
 % Low-frequency calculation
-AoL = tylka2016(AiL, u, Lo, r, kVec(1:xoIndx));
+AoL = tylka2016(AiL, u, Lo, r, kVec(1:xoIndx), beta);
 
 % High-frequency calcuation
 AoH = southern2009(AiH, u, Lo, r);
